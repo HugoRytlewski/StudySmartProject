@@ -1,30 +1,18 @@
-# Étape 1 : Construction de l'application Symfony
-FROM php:8.2-fpm
+FROM richarvey/nginx-php-fpm:2.1.2
 
-# Installation des dépendances système
-RUN apt-get update && apt-get install -y \
-    unzip \
-    git \
-    curl \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd
-
-# Installation de Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Définition du répertoire de travail
-WORKDIR /var/www
-
-# Copie des fichiers du projet
 COPY . .
 
-# Installation des dépendances Symfony
-RUN composer install --no-dev --optimize-autoloader
+# Image config
+ENV SKIP_COMPOSER 1
+ENV WEBROOT /var/www/html/public
+ENV PHP_ERRORS_STDERR 1
+ENV RUN_SCRIPTS 1
+ENV REAL_IP_HEADER 1
 
-# Correction des permissions
-RUN chown -R www-data:www-data /var/www
+# Symfony config
+ENV APP_ENV prod
 
-# Commande par défaut
-CMD ["php-fpm"]
+# Allow composer to run as root
+ENV COMPOSER_ALLOW_SUPERUSER 1
+
+CMD ["/start.sh"]
