@@ -6,8 +6,25 @@ WORKDIR /var/www/html
 # Copier les fichiers de l'application dans le conteneur
 COPY . .
 
+# Mettre à jour PHP vers la version 8.2
+RUN apk update && apk add --no-cache \
+    php8.2 \
+    php8.2-fpm \
+    php8.2-cli \
+    php8.2-json \
+    php8.2-opcache \
+    php8.2-pdo \
+    php8.2-mbstring \
+    php8.2-curl \
+    php8.2-gd \
+    php8.2-xml \
+    php8.2-zip \
+    php8.2-mysqli \
+    php8.2-json \
+    && php -v
+
 # Installer les dépendances PHP nécessaires (par exemple GD si tu l'utilises)
-RUN apk update && apk add --no-cache libpng-dev libjpeg-turbo-dev freetype-dev && \
+RUN apk add --no-cache libpng-dev libjpeg-turbo-dev freetype-dev && \
     docker-php-ext-configure gd --with-freetype --with-jpeg && \
     docker-php-ext-install gd
 
