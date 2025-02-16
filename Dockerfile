@@ -7,7 +7,7 @@ WORKDIR /var/www/html
 COPY . .
 
 # Installer les dépendances PHP nécessaires (par exemple GD si tu l'utilises)
-RUN apt-get update && apt-get install -y libpng-dev libjpeg-dev libfreetype6-dev && \
+RUN apk update && apk add --no-cache libpng-dev libjpeg-turbo-dev freetype-dev && \
     docker-php-ext-configure gd --with-freetype --with-jpeg && \
     docker-php-ext-install gd
 
@@ -20,7 +20,7 @@ ENV REAL_IP_HEADER 1
 ENV APP_ENV prod
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
-# Afficher un message pour vérifier si composer est installé avant d'exécuter la commande
+# Exécuter composer install
 RUN echo "Running composer install..." && composer install --no-interaction --optimize-autoloader
 
 # Commande à exécuter au démarrage
