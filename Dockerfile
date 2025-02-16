@@ -1,5 +1,5 @@
 # Étape 1 : Construction de l'application Symfony
-FROM php:8.1-fpm
+FROM php:8.2-fpm
 
 # Installation des dépendances système
 RUN apt-get update && apt-get install -y \
