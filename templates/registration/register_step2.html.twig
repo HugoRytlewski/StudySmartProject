@@ -1,0 +1,38 @@
+{# templates/registration/step2.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Register - Étape 2{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/auth.css') }}">
+{% endblock %}
+{% block body %}
+<div class="page">
+    <h1 class="mobile title">StudySmart 🎓 </h1>
+
+<div class="content">
+    <a href="{{path('app_register_step1')}}" class="back desktop">
+        <svg height="24" width="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="style=linear"> <g id="arrow-short-left"> <path id="vector" d="M15.2308 5L9.37451 10.5481C8.95817 10.9425 8.75 11.4713 8.75 12C8.75 12.5287 8.95817 13.0575 9.37451 13.4519L15.2308 19" stroke-width="1.5" stroke-linecap="round"></path> </g> </g> </g></svg>
+         Retour 
+    </a>
+    <h1 class="desktop">Ils nous manquent ton...</h1>
+    <h1 class="mobile h1mobile">Ils nous manquent ton...</h1>
+
+    
+    {{ form_start(registrationForm) }}
+        <div class="form-group">
+            {{ form_widget(registrationForm.children.email) }}
+            {{ form_label(registrationForm.children.email) }}
+        </div>
+        
+        <div class="form-group">
+            {{ form_widget(registrationForm.children.password) }}
+            {{ form_label(registrationForm.children.password) }}
+        </div>
+
+        <button class="button" type="submit">S'inscrire</button>
+    {{ form_end(registrationForm, {'render_rest': false}) }}
+</div>
+</div>
+
+{% endblock %}
