@@ -8,8 +8,12 @@
 {% block body %}
 <div class="content">
     <h1>Bienvenue sur StudySmart 👋</h1>
-    <a class="button" href="{{ path('app_login') }}">Se connecter</a>
-    <a class="button" href="{{ path('app_register_step1') }}">S'inscrire</a>
+    <div class="content-auth">
+        <a class="button" href="{{ path('app_login') }}">Se connecter</a>
+        <p>OU</p>
+        <a class="button" href="{{ path('app_register_step1') }}">S'inscrire</a>
+    </div>
+   
 </div>
 
 {% endblock %}

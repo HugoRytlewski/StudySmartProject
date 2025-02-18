@@ -1,58 +1,92 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 body {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    font-family: "Poppins", serif;
-    background: linear-gradient(180deg, rgba(214,129,202,1) 0%, rgba(132,154,253,1) 50%);
-    height: 100vh;
-    background-size: 200% 200%;
-    animation: animate-background 8s infinite alternate;
-  }
-
-  h1{
-    font-size: 2rem;
-    color: #333;
-    margin-bottom: 1rem;
-  }
-
-.content{
-    height: 32rem;
-    width: 45.125rem;
-    border-radius: 50px;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center; 
-    align-items: center;
-    grid-gap: 2rem;
-
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: "Poppins", serif;
+  background: linear-gradient(
+    180deg,
+    rgba(214, 129, 202, 1) 0%,
+    rgba(132, 154, 253, 1) 50%
+  );
+  height: 100vh;
+  background-size: 200% 200%;
+  animation: animate-background 8s infinite alternate;
 }
 
-.button{
-  background: linear-gradient(-90deg, #D681CA 0%, #849AFD 100%);
+h1 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.content {
+  position: relative;
+  height: 32rem;
+  width: 45.125rem;
+  border-radius: 50px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  grid-gap: 2rem;
+}
+.back {
+  position: absolute;
+  top: 2rem;
+  left: 1rem;
+  font-size: 2rem;
+  cursor: pointer;
+  text-decoration: none;
+  color: #bbbbbb;
+  stroke: #bbbbbb;
+
+  font-weight: bold;
+  font-size: 1rem;
+  display: flex;
+}
+
+.back:hover {
+  color: #333;
+  stroke: #333;
+}
+
+.content-auth {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  grid-gap: 0.5rem;
+}
+
+.button {
+  background: linear-gradient(-90deg, #d681ca 0%, #849afd 100%);
   color: white;
-  height: 2.5rem;
+  height: 66px;
+  width: 356px;
   padding: 0 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 0.5rem;
+  border-radius: 20px;
   border: none;
-
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-size: 20px;
+  gap: 1rem;
 }
 
-.button:hover{
-  scale: 1.1;
-  transition: 0.3s;
+.button:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   cursor: pointer;
 }
-form{
+
+form {
   display: flex;
   flex-direction: column;
   width: fit-content;
@@ -62,11 +96,11 @@ form{
   position: relative;
   margin-bottom: 25px;
   width: auto;
-  
 }
 
 .form-input {
-  width: auto;
+  width: 356px;
+
   padding: 10px 0;
   font-size: 16px;
   color: #333;
@@ -96,4 +130,78 @@ form{
 
 .form-input:focus {
   border-bottom: 2px solid #666;
+}
+
+.mobile {
+  display: none;
+}
+.desktop {
+  display: block;
+}
+.page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.title {
+  font-size: 6rem;
+  color: white;
+}
+
+/* Tablettes et petits écrans */
+@media screen and (max-width: 1024px) {
+  .mobile {
+    display: block;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    height: 70%;
+    gap: 3rem;
+  }
+
+  .desktop {
+    display: none;
+  }
+  .content {
+    height: 60.5rem;
+    width: 50.688rem;
+    border-radius: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+  .form-input {
+    height: 5rem;
+    width: 40rem;
+    border-bottom: 5px solid #ddd;
+    font-size: 3rem;
+  }
+
+  .form-label {
+    font-size: 3rem;
+  }
+
+  .h1mobile {
+    font-size: 3.5rem;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 4rem;
+  }
+  .form-input:focus ~ .form-label,
+  .form-input:valid ~ .form-label {
+    top: -2rem;
+    font-size: 2rem;
+  }
+
+  .button {
+    height: 8rem;
+    width: 40rem;
+    font-size: 2.5rem;
+  }
 }
