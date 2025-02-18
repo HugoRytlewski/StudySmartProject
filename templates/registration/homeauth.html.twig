@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/auth.css') }}">
+{% endblock %}
+{% block body %}
+<div class="content">
+    <h1>Bienvenue sur StudySmart 👋</h1>
+    <a class="button" href="{{ path('app_login') }}">Se connecter</a>
+    <a class="button" href="{{ path('app_register_step1') }}">S'inscrire</a>
+</div>
+
+{% endblock %}

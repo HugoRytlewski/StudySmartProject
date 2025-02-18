@@ -19,9 +19,9 @@ final class FrontController extends AbstractController{
     #[Route('/dashboard', name: 'app_dashboard')]
 public function home(): Response 
 {
-    $nom = "Hugo";
+    $user = $this->getUser();
     return $this->render('front/index.html.twig', [
-        'nom' => $nom,
+        'nom' => $user->getFirstName(),
         'phrase_motivation' => 'Phrase de motivation !',
         'evenement' => [
             'matiere' => 'Anglais',
