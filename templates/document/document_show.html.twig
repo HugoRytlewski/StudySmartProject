@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="{{ asset('styles/dashboard.css') }}">
+        <link rel="stylesheet" href="{{ asset('styles/dashboardShowDocument.css') }}">
+        <title>{{ document.nomDuFichier }} - Commentaires</title>
+    </head>
+    <body>
+        <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
+        <script src="https://files.bpcontent.cloud/2025/02/12/15/20250212152906-F549H77Y.js"></script>
+
+    <h1>📄 {{ document.nomDuFichier }}</h1>
+    
+    <div class="container">
+        <!-- Visionneuse PDF -->
+        <div class="pdf-viewer">
+            <embed src="{{ asset('uploads/pdf/' ~ document.chemin) }}" type="application/pdf" width="100%" height="600px">
+        </div>
+
+        <!-- Section Commentaires -->
+        <div class="comments-section">
+            <h2>💬 Commentaires</h2>
+            {% if commentaires|length > 0 %}
+                {% for commentaire in commentaires %}
+                    <div class="comment">
+                        <p>{{ commentaire.contenue }}</p>
+                        <small>Ajouté le {{ commentaire.updatedAt|date("d/m/Y H:i") }}</small>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Aucun commentaire pour ce document.</p>
+            {% endif %}
+
+            <div class="comment-form">
+                {{ form_start(form) }}
+                
+                <div class="form-group">
+                    {{ form_label(form.contenue) }}
+                    {{ form_widget(form.contenue, {'attr': {'class': 'comment-textarea'}}) }}
+                </div>
+                
+                {{ form_end(form) }}
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
