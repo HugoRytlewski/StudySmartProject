@@ -1,161 +1,95 @@
-<!DOCTYPE html>
-<html lang="fr">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="{{ asset('styles/dashboard.css') }}">
-        <title>StudySmart</title>
-    </head>
-    <body>
-        <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
-        <script src="https://files.bpcontent.cloud/2025/02/12/15/20250212152906-F549H77Y.js"></script>
-        
-        <div class="header">
-            <header class="sidebar">
-                <div class="sidebar-header">
-                    <img src="{{ asset('icone/logo.svg') }}" alt="logo" class="logo-icon">
-                    <h1 class="logo">StudySmart</h1>
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {# Ajoutez ici vos fichiers CSS spécifiques #}
+{% endblock %}
+
+{% block body %}
+    <div class="header">
+        <div class="main-content">
+            <div class="header-section">
+                <div class="welcome-text">
+                    <h1>Salut {{ nom }} 👋</h1>
+                    <p>{{ phrase_motivation }}</p>
                 </div>
-
-                <ul class="nav-menu">
-                    <li class="nav-item active">
-                        <div class="nav-link-content">
-                            <div class="icon-container">
-                                <img src="{{ asset('icone/acceuil.svg') }}" alt="logo" class="icon">
-                            </div>
-                            <span class="nav-text">Accueil</span>
+                <div class="header-mobile dropdown-container">
+                    <img src="{{ asset('icone/navbar.svg') }}" class="nav-mobile" alt="">
+                    <div class="profile-circle">
+                        <p>{{ nom|first }}</p>
+                    </div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-header">
+                          <div class="user-email">{{ nom }}</div>
                         </div>
-                    </li>
-                
-                    <li class="nav-item">
-                        <div class="nav-link-content">
-                            <div class="icon-container">
-                                <img src="{{ asset('icone/calendrier.svg') }}" alt="logo" class="icon">
-                            </div>
-                            <span class="nav-text">Calendrier</span>
-                        </div>
-                    </li>
-                
-                    <li class="nav-item">
-                        <div class="nav-link-content">
-                            <div class="icon-container">
-                                <img src="{{ asset('icone/cours.svg') }}" alt="logo" class="icon">
-                            </div>
-                            <span class="nav-text">Cours</span>
-                        </div>
-                    </li>
-                
-                    <li class="nav-item">
-                        <div class="nav-link-content">
-                            <div class="icon-container">
-                                <img src="{{ asset('icone/message.svg') }}" alt="logo" class="icon">
-                                <span class="notification">1</span>
-                            </div>
-                            <span class="nav-text">Messages</span>
-                        </div>
-                    </li>
-
-                    <li class="nav-item">
-                     <a href="{{ path('app_document') }}" class="nav-link">
-                        <div class="nav-link-content">
-                            <div class="icon-container">
-                                <img src="{{ asset('icone/pdf.svg') }}" alt="logo" class="icon">
-                            </div>
-                            <span class="nav-text">depots</span>
-                        </div>
-                    </li>
-                </ul>
-                
-            
-                <div class="sidebar-footer">
-                    <div class="nav-item">
-                        <div class="nav-link-content">
-                            <div class="icon-container">
-                                <img src="{{ asset('icone/param.svg') }}" alt="logo" class="icon">
-                            </div>
-                            <span class="nav-text">Paramètres</span>
+                    
+                        <div class="dropdown-content">
+                          <a href="{{ path('app_logout') }}" class="dropdown-item">
+                            Déconnexion
+                            <svg height="20" witdh="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000" transform="matrix(-1, 0, 0, 1, 0, 0)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14 4L17.5 4C20.5577 4 20.5 8 20.5 12C20.5 16 20.5577 20 17.5 20H14M3 12L15 12M3 12L7 8M3 12L7 16" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                          </a>
                         </div>
                     </div>
                 </div>
-            </header>
+            </div>
 
-            <div class="main-content">
-                <div class="header-section">
-                    <div class="welcome-text">
-                        <h1>Salut {{ nom }} 👋</h1>
-                        <p>{{ phrase_motivation }}</p>
-                    </div>
-                    <div class="header-mobile dropdown-container">
-                        <img src="{{ asset('icone/navbar.svg') }}" class="nav-mobile" alt="">
-                        <div class="profile-circle">
-                            <p>{{ nom|first }}</p>
-                        </div>
-                        <div class="dropdown-menu">
-                            <div class="dropdown-header">
-                              <div class="user-email">{{ nom }}</div>
-                            </div>
-                        
-                            <div class="dropdown-content">
-
-                              <a href="{{ path('app_logout') }}" class="dropdown-item">
-                                Déconnexion
-                                <svg height="20" witdh="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000" transform="matrix(-1, 0, 0, 1, 0, 0)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14 4L17.5 4C20.5577 4 20.5 8 20.5 12C20.5 16 20.5577 20 17.5 20H14M3 12L15 12M3 12L7 8M3 12L7 16" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>                              </a>
-                            </div>
-                          </div>
+            <div class="content-section">
+                <div class="progression-section">
+                    <h2 class="section-title">Progression</h2>
+                    <div class="progression-cards">
+                        <div class="small-card"></div>
+                        <div class="large-card"></div>
                     </div>
                 </div>
 
-                <div class="content-section">
-                    <div class="progression-section">
-                        <h2 class="section-title">Progression</h2>
-                        <div class="progression-cards">
-                            <div class="small-card"></div>
-                            <div class="large-card"></div>
+                <div class="info-section">
+                    <div class="event-section">
+                        <h2 class="section-title">Prochain événement</h2>
+                        <div class="event-item">
+                            <div class="event-icon"></div>
+                            <div class="event-details">
+                                <p>{{ evenement.matiere }}</p>
+                                <p class="event-date">{{ evenement.description }} avant le {{ evenement.date }}</p>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="info-section">
-                        <div class="event-section">
-                            <h2 class="section-title">Prochain événement</h2>
-                            <div class="event-item">
-                                <div class="event-icon"></div>
-                                <div class="event-details">
-                                    <p>{{ evenement.matiere }}</p>
-                                    <p class="event-date">{{ evenement.description }} avant le {{ evenement.date }}</p>
-                                </div>
+                    <div class="calendar-section">
+                        <div class="section-header">
+                            <h2 class="section-title">Calendrier</h2>
+                            <p class="see-more">Voir +</p>
+                        </div>
+                        <div class="calendar-item">
+                            <div class="calendar-event">
+                                <div class="event-marker"></div>
+                                <p class="event-name">{{ calendrier.nom }}</p>
+                                <p class="event-time">{{ calendrier.debut }} - {{ calendrier.fin }}</p>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="calendar-section">
-                            <div class="section-header">
-                                <h2 class="section-title">Calendrier</h2>
-                                <p class="see-more">Voir +</p>
-                            </div>
-                            <div class="calendar-item">
-                                <div class="calendar-event">
-                                    <div class="event-marker"></div>
-                                    <p class="event-name">{{ calendrier.nom }}</p>
-                                    <p class="event-time">{{ calendrier.debut }} - {{ calendrier.fin }}</p>
-                                </div>
-                            </div>
+                    <div class="messages-section">
+                        <div class="section-header">
+                            <h2 class="section-title">Dernier message</h2>
+                            <p class="see-more">Voir +</p>
                         </div>
-
-                        <div class="messages-section">
-                            <div class="section-header">
-                                <h2 class="section-title">Dernier message</h2>
-                                <p class="see-more">Voir +</p>
-                            </div>
-                            <div class="message-item">
-                                <div class="user-avatar"></div>
-                                <div class="message-content">
-                                    <p>{{ message.auteur }}</p>
-                                    <p class="message-text">{{ message.texte }}</p>
-                                </div>
+                        <div class="message-item">
+                            <div class="user-avatar"></div>
+                            <div class="message-content">
+                                <p>{{ message.auteur }}</p>
+                                <p class="message-text">{{ message.texte }}</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </body>
-</html>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {# Ajoutez ici vos fichiers JavaScript spécifiques #}
+{% endblock %}

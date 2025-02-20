@@ -1,9 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="{{ asset('styles/dashboard.css') }}">
+        <title>StudySmart</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+
         {% block stylesheets %}
         {% endblock %}
 
@@ -12,6 +15,69 @@
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
+        <script src="https://files.bpcontent.cloud/2025/02/12/15/20250212152906-F549H77Y.js"></script>
+        <header class="sidebar">
+            <div class="sidebar-header">
+                <img src="{{ asset('icone/logo.svg') }}" alt="logo" class="logo-icon">
+                <h1 class="logo">StudySmart</h1>
+            </div>
+
+            <ul class="nav-menu">
+                <li class="nav-item active">
+                    <a href="{{ path('app_dashboard') }}" class="nav-link-content">
+                        <div class="icon-container">
+                            <img src="{{ asset('icone/acceuil.svg') }}" alt="logo" class="icon">
+                        </div>
+                        <span class="nav-text">Accueil</span>
+                    </a>
+                </li>
+            
+                <li class="nav-item">
+                    <div class="nav-link-content">
+                        <div class="icon-container">
+                            <img src="{{ asset('icone/calendrier.svg') }}" alt="logo" class="icon">
+                        </div>
+                        <span class="nav-text">Calendrier</span>
+                    </div>
+                </li>
+            
+                <li class="nav-item">
+                    <a href="{{ path('app_document') }}" class="nav-link-content">
+                        <div class="icon-container">
+                            <img src="{{ asset('icone/cours.svg') }}" alt="logo" class="icon">
+                        </div>
+                        <span class="nav-text">Documents</span>
+                    </a>
+                </li>
+            
+                <li class="nav-item">
+                    <div class="nav-link-content">
+                        <div class="icon-container">
+                            <img src="{{ asset('icone/message.svg') }}" alt="logo" class="icon">
+                            <span class="notification">1</span>
+                        </div>
+                        <span class="nav-text">Messages</span>
+                    </div>
+                </li>
+            </ul>
+            
+        
+            <div class="sidebar-footer">
+                <div class="nav-item">
+                    <div class="nav-link-content">
+                        <div class="icon-container">
+                            <img src="{{ asset('icone/param.svg') }}" alt="logo" class="icon">
+                        </div>
+                        <span class="nav-text">Paramètres</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        {% block body %}
+        {% endblock %}
+
+        {% block scripts %}
+        {% endblock %}
     </body>
 </html>
