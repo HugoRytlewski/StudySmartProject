@@ -17,6 +17,8 @@
     <body>
         <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
         <script src="https://files.bpcontent.cloud/2025/02/12/15/20250212152906-F549H77Y.js"></script>
+
+        {% if app.user %}
         <header class="sidebar">
             <div class="sidebar-header">
                 <img src="{{ asset('icone/logo.svg') }}" alt="logo" class="logo-icon">
@@ -74,6 +76,7 @@
                 </div>
             </div>
         </header>
+        {% endif %}
         {% block body %}
         {% endblock %}
 
