@@ -1,0 +1,5 @@
+#calendar {
+    max-width: 1200px; /* Ajuste la largeur */
+    margin: 0 auto; /* Centre le calendrier */
+    font-size: 0.9rem; /* Réduit la taille du texte */
+}
