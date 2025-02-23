@@ -57,6 +57,7 @@
 }
 
 .header {
+    margin-top: 5rem;
     width: 100vw;
     display: flex;
 }
@@ -131,7 +132,9 @@
     gap: var(--spacing-md);
     padding: var(--spacing-xs) 0 var(--spacing-xs) var(--spacing-sm);
 }
-
+a{
+    text-decoration: none;
+}
 .icon-container {
     width: var(--icon-size);
     height: var(--icon-size);
@@ -143,7 +146,9 @@
     position: relative;
     transition: all var(--transition-speed) ease;
 }
-
+h1{
+    color: black;
+}
 .icon-container i {
     font-size: var(--font-size-lg);
     color: var(--secondary-text);
@@ -209,7 +214,6 @@
 }
 
 .main-content {
-    padding-top: 5rem;
     width: 100vw;
     justify-content: center;
     align-items: center;
@@ -476,7 +480,7 @@
     .welcome-text h1 {
         font-size: var(--font-size-xl);
     }
-
+ 
     .nav-item {
         flex-basis: auto;
     }
