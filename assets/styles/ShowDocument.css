@@ -8,7 +8,8 @@
     background: #f4f4f4;
     padding: 10px;
     border-radius: 10px;
-    height: 600px; /* Ajuste la hauteur selon ton besoin */
+    height: 80vh; /* Ajuste la hauteur selon ton besoin */
+    max-height: 800px; /* Limite maximale pour la hauteur */
     border: 1px solid #ccc; /* Optionnel : pour mieux voir la bordure */
     overflow: auto;
     
@@ -59,27 +60,35 @@
 }
 
 .highlight {
-    position: relative;
-    background-color: rgba(255, 255, 0, 0.5); /* Jaune semi-transparent */
+    position: absolute;
+    background-color: rgba(255, 255, 0, 0.7); /* Augmenter l'opacité */
+    border: 1px solid rgba(255, 255, 0, 0.5); /* Ajouter une bordure pour la visibilité */
     pointer-events: none;
+    border-radius: 5px;
 }
 
 .annotation {
-    position: relative;
+    position: absolute;
     background: white;
     color: black;
     border: 1px solid black;
     padding: 5px;
     border-radius: 5px;
     font-size: 12px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 10;
 }
 
 .button {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
+   
     display: flex;
     gap: 10px; /* Espacement entre les boutons */
+    
+    position: fixed;
+    bottom: 20px; /* Ajustez l'espace depuis le bas */
+    left: 20px;
+    z-index: 1000; /* Assurez-vous qu'ils sont au-dessus du contenu */
+    
 }
 
 .button button {
@@ -95,4 +104,21 @@
     background-color: #0056b3;
 }
 
+.pdf-page-container {
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
 
+.pdf-page {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.highlight-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none; /* Les événements passent au PDF */
+}
