@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b9234450c6ff3d355db0c8a484639b2d",
+    "content-hash": "88ef7035e5f7617031167e70ff9f042e",
     "packages": [
         {
             "name": "composer/semver",
@@ -1300,6 +1300,70 @@
                 "source": "https://github.com/doctrine/sql-formatter/tree/1.5.2"
             },
             "time": "2025-01-24T11:45:48+00:00"
+        },
+        {
+            "name": "johngrogg/ics-parser",
+            "version": "v3.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/u01jmg3/ics-parser.git",
+                "reference": "abb41a4a46256389aa4e6f582bad76f0d4cb3ebc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/u01jmg3/ics-parser/zipball/abb41a4a46256389aa4e6f582bad76f0d4cb3ebc",
+                "reference": "abb41a4a46256389aa4e6f582bad76f0d4cb3ebc",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=5.6.40"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5|^9|^10"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "ICal": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jonathan Goode",
+                    "role": "Developer/Owner"
+                },
+                {
+                    "name": "John Grogg",
+                    "email": "john.grogg@gmail.com",
+                    "role": "Developer/Prior Owner"
+                }
+            ],
+            "description": "ICS Parser",
+            "homepage": "https://github.com/u01jmg3/ics-parser",
+            "keywords": [
+                "iCalendar",
+                "ical",
+                "ical-parser",
+                "ics",
+                "ics-parser",
+                "ifb"
+            ],
+            "support": {
+                "issues": "https://github.com/u01jmg3/ics-parser/issues",
+                "source": "https://github.com/u01jmg3/ics-parser/tree/v3.4.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sponsors/u01jmg3",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-06-26T08:18:40+00:00"
         },
         {
             "name": "psr/cache",

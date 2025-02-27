@@ -1,34 +1,39 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <div id="calendar-controls">
+        <button id="addCalendarBtn">➕ Ajouter un calendrier</button>
+        <input type="text" id="calendarUrlInput" placeholder="Entrez l'URL du calendrier" style="display:none;">
+        <button id="validateCalendarBtn" style="display:none;">✔️ Valider</button>
+    </div>
     <div id="calendar"></div>
 
-<!-- Modal -->
-<div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="eventModalLabel">Ajouter un événement</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="eventForm">
-                    <div class="mb-3">
-                        <label for="eventTitre" class="form-label">Titre</label>
-                        <input type="text" class="form-control" id="eventTitre" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="eventStart" class="form-label">Heure de début</label>
-                        <input type="time" class="form-control" id="eventStart" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="eventEnd" class="form-label">Heure de fin</label>
-                        <input type="time" class="form-control" id="eventEnd" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Ajouter</button>
-                </form>
+    <!-- Modal -->
+    <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eventModalLabel">Ajouter un événement</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="eventForm">
+                        <div class="mb-3">
+                            <label for="eventTitre" class="form-label">Titre</label>
+                            <input type="text" class="form-control" id="eventTitre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="eventStart" class="form-label">Heure de début</label>
+                            <input type="time" class="form-control" id="eventStart" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="eventEnd" class="form-label">Heure de fin</label>
+                            <input type="time" class="form-control" id="eventEnd" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Ajouter</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}

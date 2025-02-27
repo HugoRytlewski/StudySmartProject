@@ -24,17 +24,44 @@ final class CalendarController extends AbstractController
     #[Route('/api/add-event', name: 'api_add_event', methods: ['POST'])]
     public function addEvent(Request $request, EntityManagerInterface $em): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
-        dump($data);
-        $event = new Event();
-        $event->setTitre($data['titre']);
-        $event->setDateStart(new \DateTime($data['start']));
-        $event->setDateEnd(new \DateTime($data['end']));
+        try {
+            $data = json_decode($request->getContent(), true);
 
-        $em->persist($event);
+            if (!$data || !isset($data['titre']) || !isset($data['start']) || !isset($data['end'])) {
+                throw new \Exception('Invalid data');
+            }
+
+            $event = new Event();
+            $event->setTitre($data['titre']);
+            $event->setDateStart(new \DateTime($data['start']));
+            $event->setDateEnd(new \DateTime($data['end']));
+
+            $em->persist($event);
+            $em->flush();
+
+            return new JsonResponse(['id' => $event->getId(), 'status' => 'Event created!'], 201);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    #[Route('/api/add-ics-events', name: 'api_add_ics_events', methods: ['POST'])]
+    public function addIcsEvents(Request $request, EntityManagerInterface $em): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        $events = $data['events'];
+
+        foreach ($events as $eventData) {
+            $event = new Event();
+            $event->setTitre($eventData['title']);
+            $event->setDateStart(new \DateTime($eventData['start']));
+            $event->setDateEnd(new \DateTime($eventData['end']));
+            $em->persist($event);
+        }
+
         $em->flush();
 
-        return new JsonResponse(['status' => 'Event created!'], 201);
+        return new JsonResponse(['status' => 'ICS Events created!'], 201);
     }
 
 }
