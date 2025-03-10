@@ -22,14 +22,21 @@ class MessageController extends AbstractController
         $lastMessages = $entityManager->getRepository(Message::class)->getLastMessagesByPerson($this->getUser());
          $user = $this->getUser();
          $allUsers = $entityManager->getRepository(Message::class)->findByUsersWithoutConversation($user);
+
+         if($lastMessages[0]->getId())
+            {
+                $id = $lastMessages[0]->getSender() === $user ? $lastMessages[0]->getRecipient()->getId() : $lastMessages[0]->getSender()->getId();
+            }else{
+                $id = 0;
+            }
+
         return $this->render('message/index.html.twig', [
             'nom' => $user->getFirstName(),
             'messages' => null,
             'lastMessages' => $lastMessages,
             'allUsers' => $allUsers,
             'idPeople' => 0,
-            'lastId' => $lastMessages[0]->getId()
-
+            'lastId' => $id
         ]);
     }
 
@@ -50,7 +57,6 @@ class MessageController extends AbstractController
             $recipient = $userRepository->find($recipient);
 
         }
-        //dd('ok');
 
         $message->setContent($MessageSend);
         $message->setSender($user);

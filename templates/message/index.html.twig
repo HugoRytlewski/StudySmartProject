@@ -148,13 +148,16 @@
                     messagesContainer.appendChild(messageElement);
 
                     window.lastId = Math.max(window.lastId, message.id);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+                    
                 });
 
             })
             .catch(error => console.error('Erreur lors de la récupération des messages:', error));
     }
 
-    setInterval(fetchLatestMessages, 1000);
+    setInterval(fetchLatestMessages, 2000);
 
     const customDropdown = document.getElementById('myCustomDropdown');
     const customDropdownButton = document.getElementById('customDropdownButton');

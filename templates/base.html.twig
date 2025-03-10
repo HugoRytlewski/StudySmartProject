@@ -93,7 +93,6 @@ function fetchLatestMessages() {
             .then(response => response.json())
             .then(data => {
                 if(data){
-                    console.log(data);
                     notification.style.display = 'block';
                 }else{
                     notification.style.display = 'none';
@@ -102,6 +101,6 @@ function fetchLatestMessages() {
             .catch(error => console.error('Erreur lors de la récupération des messages:', error));
     }
 
-    setInterval(fetchLatestMessages, 1000);
+    setInterval(fetchLatestMessages, 10000);
 
 </script>
