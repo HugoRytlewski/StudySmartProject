@@ -36,4 +36,24 @@
             </div>
         </div>
     </div>
+    <!-- Modal pour afficher les détails de l'événement -->
+    <div class="modal fade" id="eventDetailModal" tabindex="-1" aria-labelledby="eventDetailModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eventDetailModalLabel">Détails de l'événement</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Titre:</strong> <span id="detailTitle"></span></p>
+                    <p><strong>Date:</strong> <span id="detailDate"></span></p>
+                    <p><strong>Heure de début:</strong> <span id="detailStart"></span></p>
+                    <p><strong>Heure de fin:</strong> <span id="detailEnd"></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button id="deleteEvent" type="button" class="btn btn-danger">Supprimer</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

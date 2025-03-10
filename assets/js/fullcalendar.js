@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let calendarEl = document.getElementById('calendar');
     let modal = new bootstrap.Modal(document.getElementById('eventModal'));
     let form = document.getElementById('eventForm');
+    let detailModal = new bootstrap.Modal(document.getElementById('eventDetailModal'));
 
     if (calendarEl && !calendarEl.dataset.initialized) {
         console.log("✅ Initialisation du calendrier");
@@ -40,10 +41,58 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Ouvre le modal
                 modal.show();
+            },
+
+            eventClick: function (info) {
+                console.log("📅 Événement cliqué :", info.event);
+
+                // Formater la date et l'heure
+                let eventDate = new Date(info.event.start);
+                let startDate = formatDate(eventDate);
+                let startTime = formatTime(eventDate);
+                let endTime = info.event.end ? formatTime(new Date(info.event.end)) : 'Non spécifié';
+
+                // Afficher les détails de l'événement dans le modal
+                document.getElementById('detailTitle').innerText = info.event.title;
+                document.getElementById('detailDate').innerText = startDate;
+                document.getElementById('detailStart').innerText = startTime;
+                document.getElementById('detailEnd').innerText = endTime;
+                document.getElementById('deleteEvent').dataset.eventId = info.event.id;
+
+                // Ouvre le modal de détails
+                detailModal.show();
             }
         });
 
         calendar.render();
+
+        var deleteEventBtn = document.getElementById('deleteEvent');
+        deleteEventBtn.addEventListener('click', function() {
+            var eventId = deleteEventBtn.dataset.eventId;
+            fetch(`/api/delete-event/${eventId}`, {
+                method: 'DELETE',
+                headers: {'Content-Type': 'application/json'}
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(err => { throw new Error(err.error); });
+                    }
+                    return response.json();
+                })
+                .then((result) => {
+                    console.log(result.status);
+
+                    // Supprimer l'événement du calendrier
+                    var event = calendar.getEventById(eventId);
+                    if (event) {
+                        event.remove();
+                    }
+
+                    alert("✅ Événement supprimé !");
+                    detailModal.hide(); // Ferme le modal après suppression
+                })
+                .catch(error => console.error('❌ Erreur lors de la suppression de l\'événement:', error));
+        });
 
         // Gestion de l'ajout d'événement via le formulaire
         form.addEventListener('submit', function (e) {
@@ -166,6 +215,21 @@ document.addEventListener('DOMContentLoaded', function () {
                 start: event['DTSTART'],
                 end: event['DTEND']
             }));
+        }
+
+        function formatDate(date) {
+            return date.toLocaleDateString('fr-FR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        function formatTime(date) {
+            return date.toLocaleTimeString('fr-FR', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
         }
     }
 });

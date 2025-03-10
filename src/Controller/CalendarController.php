@@ -64,4 +64,19 @@ final class CalendarController extends AbstractController
         return new JsonResponse(['status' => 'ICS Events created!'], 201);
     }
 
+    #[Route('/api/delete-event/{id}', name: 'api_delete_event', methods: ['DELETE'])]
+    public function deleteEvent(int $id, EntityManagerInterface $em): JsonResponse
+    {
+        $event = $em->getRepository(Event::class)->find($id);
+
+        if (!$event) {
+            return new JsonResponse(['error' => 'Event not found'], 404);
+        }
+
+        $em->remove($event);
+        $em->flush();
+
+        return new JsonResponse(['status' => 'Event deleted!'], 200);
+    }
+
 }
