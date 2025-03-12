@@ -1,6 +1,7 @@
 import { Calendar } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import timeGridPlugin from '@fullcalendar/timegrid';
 
 document.addEventListener('DOMContentLoaded', function () {
     let calendarEl = document.getElementById('calendar');
@@ -14,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
         calendarEl.dataset.initialized = "true";
 
         let calendar = new Calendar(calendarEl, {
-            plugins: [dayGridPlugin, interactionPlugin],
+            plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
             initialView: 'dayGridMonth',
             selectable: true,
             editable: true,
@@ -94,22 +95,56 @@ document.addEventListener('DOMContentLoaded', function () {
                 .catch(error => console.error('❌ Erreur lors de la suppression de l\'événement:', error));
         });
 
+        // Écouteur pour la case "Toute la journée"
+        document.getElementById('allDayEvent').addEventListener('change', function() {
+            let startTimeInput = document.getElementById('eventStart');
+            let endTimeInput = document.getElementById('eventEnd');
+            if (this.checked) {
+                startTimeInput.required = false;
+                endTimeInput.required = false;
+                startTimeInput.value = '';
+                endTimeInput.value = '';
+                startTimeInput.disabled = true;
+                endTimeInput.disabled = true;
+            } else {
+                startTimeInput.required = true;
+                endTimeInput.required = true;
+                startTimeInput.disabled = false;
+                endTimeInput.disabled = false;
+            }
+        });
+
         // Gestion de l'ajout d'événement via le formulaire
         form.addEventListener('submit', function (e) {
             e.preventDefault();
 
             let titre = document.getElementById('eventTitre').value.trim();
-            let startTime = document.getElementById('eventStart').value;
-            let endTime = document.getElementById('eventEnd').value;
+            let startTimeInput = document.getElementById('eventStart');
+            let endTimeInput = document.getElementById('eventEnd');
             let selectedDate = form.dataset.selectedDate;
+            let allDay = document.getElementById('allDayEvent').checked;
 
-            if (!titre || !startTime || !endTime) {
-                alert("❌ Remplissez tous les champs !");
+            if (!titre) {
+                alert("❌ Remplissez le titre !");
                 return;
             }
 
-            let startDateTime = `${selectedDate}T${startTime}:00`;
-            let endDateTime = `${selectedDate}T${endTime}:00`;
+            let startDateTime, endDateTime;
+            if (allDay) {
+                startDateTime = selectedDate;
+                endDateTime = selectedDate;
+            } else {
+                let startTime = startTimeInput.value;
+                let endTime = endTimeInput.value;
+
+                if (!startTime || !endTime) {
+                    alert("❌ Remplissez les heures de début et de fin !");
+                    return;
+                }
+
+                startDateTime = `${selectedDate}T${startTime}:00`;
+                endDateTime = `${selectedDate}T${endTime}:00`;
+            }
 
             fetch('/api/add-event', {
                 method: 'POST',
@@ -117,7 +152,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 body: JSON.stringify({
                     titre: titre,
                     start: startDateTime,
-                    end: endDateTime
+                    end: endDateTime,
+                    allDay: allDay
                 }),
             })
                 .then(response => {
@@ -131,7 +167,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         id: event.id,
                         title: titre,
                         start: startDateTime,
-                        end: endDateTime
+                        end: endDateTime,
+                        allDay: allDay
                     });
 
                     alert("✅ Événement ajouté !");
