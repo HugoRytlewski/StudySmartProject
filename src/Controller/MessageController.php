@@ -22,8 +22,9 @@ class MessageController extends AbstractController
         $lastMessages = $entityManager->getRepository(Message::class)->getLastMessagesByPerson($this->getUser());
          $user = $this->getUser();
          $allUsers = $entityManager->getRepository(Message::class)->findByUsersWithoutConversation($user);
+         
 
-         if($lastMessages[0]->getId())
+         if($lastMessages)
             {
                 $id = $lastMessages[0]->getSender() === $user ? $lastMessages[0]->getRecipient()->getId() : $lastMessages[0]->getSender()->getId();
             }else{
@@ -114,12 +115,14 @@ public function checkMessages(messageRepository $messageRepository): JsonRespons
             ]);
     }
 
-#[Route('/messages/latest/{lastId}', name: 'messages_latest')]
-public function latestMessages(MessageRepository $messageRepository, int $lastId): JsonResponse
-{
-    $newMessages = $messageRepository->findNewMessages($lastId); 
-    return $this->json($newMessages);
-}
+    #[Route('/messages/latest/{partnerId}/{lastId}', name: 'messages_latest')]
+    public function latestMessages(MessageRepository $messageRepository, int $partnerId, int $lastId): JsonResponse
+    {
+        $currentUserId = $this->getUser()->getId();
+        $newMessages = $messageRepository->findNewMessages($lastId, $currentUserId, $partnerId); 
+        return $this->json($newMessages);
+    }
+    
 
 
 

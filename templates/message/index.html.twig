@@ -126,38 +126,51 @@
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
 
-   
-    const lastIdElement = document.querySelector('[data-message-id]');
-    window.lastId = lastIdElement ? parseInt(lastIdElement.textContent, 10) : 0;
+const partnerId = {{ idPeople }};
+let lastId = {{ lastId }};
+const currentUserId = {{ app.user.id }};
+
+function fetchLatestMessages() {
+    console.log(`Fetching messages with lastId: ${lastId}`);
     
-    function fetchLatestMessages() {
-        fetch(`/messages/latest/${lastId}`)
-            .then(response => response.json())
-            .then(data => {
-                const messagesContainer = document.getElementById("scroll");
-                if (!messagesContainer) return;                
-                data.forEach(message => {
-                    const messageElement = document.createElement('div');
-                    messageElement.className = message.sender_id === parseInt("{{ app.user.id }}", 10) ? 'messageAuthor' : 'messageOther';
-                    messageElement.innerHTML = `
-                        <div class="profile">
-                            <p>${message.firstName.charAt(0)}</p>
-                        </div>
-                        <p>${message.content}</p>
-                    `;
-                    messagesContainer.appendChild(messageElement);
+    fetch(`/messages/latest/${partnerId}/${lastId}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log('Nouveaux messages reçus:', data);
+            
+            if (data.length === 0) return; 
+            
+            const messagesContainer = document.getElementById("scroll");
+            if (!messagesContainer) return;
+            
+            data.forEach(message => {
+                const existingMessage = document.querySelector(`[data-message-id="${message.id}"]`);
+                if (existingMessage) return; 
+                
+                const messageElement = document.createElement('div');
+                messageElement.className = message.sender_id === currentUserId ? 'messageAuthor' : 'messageOther';
+                messageElement.setAttribute('data-message-id', message.id);
+                messageElement.innerHTML = `
+                    <div class="profile">
+                        <p>${message.firstName.charAt(0)}</p>
+                    </div>
+                    <p>${message.content}</p>
+                `;
+                messagesContainer.appendChild(messageElement);
+                
+                if (message.id > lastId) {
+                    lastId = message.id;
+                    console.log(`lastId mis à jour: ${lastId}`);
+                }
+            });
+            
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        })
+        .catch(error => console.error('Erreur lors de la récupération des messages:', error));
+}
 
-                    window.lastId = Math.max(window.lastId, message.id);
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
-                    
-                });
-
-            })
-            .catch(error => console.error('Erreur lors de la récupération des messages:', error));
-    }
-
-    setInterval(fetchLatestMessages, 2000);
+    setInterval(fetchLatestMessages, 5000);
 
     const customDropdown = document.getElementById('myCustomDropdown');
     const customDropdownButton = document.getElementById('customDropdownButton');

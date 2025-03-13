@@ -104,13 +104,16 @@ public function findByUsersWithoutConversation(User $user): array
     return $query->getResult();
 }
 
-public function findNewMessages(int $lastId): array
+public function findNewMessages(int $lastId, int $senderId, int $recipientId): array
 {
     return $this->createQueryBuilder('m')
-        ->select('m.id, m.content, sender.id as sender_id, sender.firstName') 
-        ->join('m.sender', 'sender') 
+        ->select('m.id, m.content, sender.id as sender_id, sender.firstName')
+        ->join('m.sender', 'sender')
         ->where('m.id > :lastId')
+        ->andWhere('(m.sender = :senderId AND m.recipient = :recipientId) OR (m.sender = :recipientId AND m.recipient = :senderId)')
         ->setParameter('lastId', $lastId)
+        ->setParameter('senderId', $senderId)
+        ->setParameter('recipientId', $recipientId)
         ->orderBy('m.id', 'ASC')
         ->getQuery()
         ->getArrayResult();
