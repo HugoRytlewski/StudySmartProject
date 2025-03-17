@@ -4,7 +4,8 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="{{ asset('styles/dashboard.css') }}">
-        <title>StudySmart - Dépôt de fichiers</title>
+        <link rel="stylesheet" href="{{ asset('styles/Document.css') }}">
+        <title>StudySmart - Bibliothèque</title>
     </head>
     <body>
         <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
@@ -73,22 +74,58 @@
                     </div>
                 </div>
             </header>
-            
+
             <main class="content">
-                <div class="upload-container">
-                    <h2 class="upload-title">Déposer un fichier PDF</h2>
-                    <form action="{{ path('app_document') }}" method="post" enctype="multipart/form-data" class="upload-form">
-                        {{ form_start(form) }}
-                        <div class="form-group">
-                            <label for="pdfFile">Choisir un fichier PDF :</label>
-                            {{ form_widget(form.pdfFile, {'attr': {'class': 'file-input'}}) }}
-                            <button type="submit" class="submit-button">Valider</button>
-                        </div>
-                        
-                        {{ form_end(form) }}
-                    </form>
+                <!-- Section des derniers fichiers -->
+                <div class="latest-docs">
+                    <h2>📄 Derniers fichiers ajoutés</h2>
+                    <div class="latest-docs-container">
+                        {% for document in documents|slice(0, 3) %}
+                            <div class="doc-card">
+                                <p>{{ document.nomDuFichier }}</p>
+                                <a href="{{ asset('uploads/pdf/' ~ document.chemin) }}" target="_blank">📥 Télécharger</a>
+                            </div>
+                        {% else %}
+                            <p>Aucun document récent.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Bibliothèque & Upload -->
+                <div class="library-container">
+                    <!-- Bibliothèque à gauche -->
+                    <div class="library">
+                        <h2>📚 Ma Bibliothèque</h2>
+                        <ul class="document-list">
+                           {% for document in documents %}
+                                <li>
+                                    <p>{{ document.nomDuFichier }}</p>
+                                    <a href="{{ asset('uploads/pdf/' ~ document.chemin) }}" target="_blank">📥 Télécharger</a>
+                                    <a href="{{ path('document_show', { 'id': document.id }) }}" class="comment-button">💬 Commentaire</a>
+                                </li>
+                            {% else %}
+                                <p>Aucun document disponible.</p>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <!-- Formulaire à droite -->
+                    <div class="upload-container">
+                        <h2>📤 Ajouter un fichier</h2>
+                        <form action="{{ path('app_document') }}" method="post" enctype="multipart/form-data" class="upload-form">
+                            {{ form_start(form) }}
+                            <div class="form-group">
+                                <label for="pdfFile">Choisir un fichier PDF :</label>
+                                {{ form_widget(form.pdfFile, {'attr': {'class': 'file-input'}}) }}
+                                <button type="submit" class="submit-button">📎 Upload</button>
+                            </div>
+                            {{ form_end(form) }}
+                        </form>
+                    </div>
                 </div>
             </main>
         </div>
+
+        
     </body>
 </html>

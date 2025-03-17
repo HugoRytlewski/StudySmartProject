@@ -1,3 +1,5 @@
+import './bootstrap.js';
+
 /*
  * Welcome to your app's main JavaScript file!
  *
@@ -9,3 +11,4 @@ import './styles/calendar.css';
 import './js/fullcalendar.js'
 
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
+
