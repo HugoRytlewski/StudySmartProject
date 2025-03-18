@@ -33,9 +33,16 @@ class Document
     #[ORM\ManyToOne(inversedBy: 'documents')]
     private ?User $user = null;
 
+    /**
+     * @var Collection<int, Annotation>
+     */
+    #[ORM\OneToMany(targetEntity: Annotation::class, mappedBy: 'document')]
+    private Collection $annotations;
+
     public function __construct()
     {
         $this->documentCommentaires = new ArrayCollection();
+        $this->annotations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -117,6 +124,36 @@ class Document
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Annotation>
+     */
+    public function getAnnotations(): Collection
+    {
+        return $this->annotations;
+    }
+
+    public function addAnnotation(Annotation $annotation): static
+    {
+        if (!$this->annotations->contains($annotation)) {
+            $this->annotations->add($annotation);
+            $annotation->setDocument($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAnnotation(Annotation $annotation): static
+    {
+        if ($this->annotations->removeElement($annotation)) {
+            // set the owning side to null (unless already changed)
+            if ($annotation->getDocument() === $this) {
+                $annotation->setDocument(null);
+            }
+        }
 
         return $this;
     }

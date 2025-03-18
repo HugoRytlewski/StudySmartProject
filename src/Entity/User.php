@@ -65,9 +65,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Document::class, mappedBy: 'user')]
     private Collection $documents;
 
+    /**
+     * @var Collection<int, Annotation>
+     */
+    #[ORM\OneToMany(targetEntity: Annotation::class, mappedBy: 'User')]
+    private Collection $annotations;
+
     public function __construct()
     {
         $this->documents = new ArrayCollection();
+        $this->annotations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -194,6 +201,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($document->getUser() === $this) {
                 $document->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Annotation>
+     */
+    public function getAnnotations(): Collection
+    {
+        return $this->annotations;
+    }
+
+    public function addAnnotation(Annotation $annotation): static
+    {
+        if (!$this->annotations->contains($annotation)) {
+            $this->annotations->add($annotation);
+            $annotation->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAnnotation(Annotation $annotation): static
+    {
+        if ($this->annotations->removeElement($annotation)) {
+            // set the owning side to null (unless already changed)
+            if ($annotation->getUser() === $this) {
+                $annotation->setUser(null);
             }
         }
 

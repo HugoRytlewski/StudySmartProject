@@ -14,6 +14,7 @@ use App\Form\DocumentType;
 use App\Entity\DocumentCommentaire;
 use App\Form\CommentaireDocumentType;
 use Symfony\Bundle\SecurityBundle\Security;
+use App\Repository\AnnotationRepository;
 
 final class DocumentController extends AbstractController{
     #[Route('/document', name: 'app_document')]
@@ -64,38 +65,38 @@ final class DocumentController extends AbstractController{
     }
 
     #[Route('/document/{id}', name: 'document_show')]
-public function show(Document $document, Request $request, EntityManagerInterface $em, Security $security): Response
-{
-    $user = $security->getUser();
+    public function show(Document $document, Request $request, EntityManagerInterface $em, Security $security, AnnotationRepository $annotationRepository): Response
+    {
+        $user = $security->getUser();
         if ($document->getUser() !== $user) {
             throw $this->createAccessDeniedException("Vous n'avez pas accès à ce document.");
         }
-    // Récupérer les commentaires existants
-    $commentaires = $document->getDocumentCommentaires();
+        // Récupérer les commentaires existants
+        $commentaires = $document->getDocumentCommentaires();
 
-    // Créer un nouveau commentaire
-    $commentaire = new DocumentCommentaire();
-    $form = $this->createForm(CommentaireDocumentType::class, $commentaire);
-    $form->handleRequest($request);
+        // Créer un nouveau commentaire
+        $commentaire = new DocumentCommentaire();
+        $form = $this->createForm(CommentaireDocumentType::class, $commentaire);
+        $form->handleRequest($request);
+        $annotations = $annotationRepository->findBy(['document' => $document]);
 
-    if ($form->isSubmitted() && $form->isValid()) {
-        $commentaire->setDocument($document);
-        $commentaire->setUpdatedAt(new \DateTimeImmutable());
+        if ($form->isSubmitted() && $form->isValid()) {
+            $commentaire->setDocument($document);
+            $commentaire->setUpdatedAt(new \DateTimeImmutable());
 
-        $em->persist($commentaire);
-        $em->flush();
+            $em->persist($commentaire);
+            $em->flush();
 
-        $this->addFlash('success', 'Commentaire ajouté avec succès.');
+            $this->addFlash('success', 'Commentaire ajouté avec succès.');
 
-        return $this->redirectToRoute('document_show', ['id' => $document->getId()]);
+            return $this->redirectToRoute('document_show', ['id' => $document->getId()]);
+        }
+
+        return $this->render('document/document_show.html.twig', [
+            'document' => $document,
+            'annotations' => $annotations,
+            'commentaires' => $commentaires,
+            'form' => $form->createView(),
+        ]);
     }
-
-    return $this->render('document/document_show.html.twig', [
-        'document' => $document,
-        'commentaires' => $commentaires,
-        'form' => $form->createView(),
-    ]);
-}
-
-
 }

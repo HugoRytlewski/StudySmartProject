@@ -18,7 +18,12 @@
    
     <div class="container">
         <div class="pdf-viewer">
-            <div id="pdf-container" data-pdf-url="{{ asset('uploads/pdf/' ~ document.chemin) }}"></div>
+            <div id="pdf-container" 
+                data-pdf-url="{{ asset('uploads/pdf/' ~ document.chemin) }}"
+                data-document-id="{{ document.id }}"
+                data-annotations="{{ annotations|json_encode }}">
+            </div>
+
         </div>
 
         <div class="comments-section">
@@ -43,6 +48,7 @@
                 {{ form_end(form) }}
             </div>
         </div>
+
         <div class="button">
             <button id="highlight-btn">🖍 Surligner</button>
             <button id="annotate-btn">✏️ Ajouter Annotation</button>

@@ -1,133 +1,79 @@
 <!DOCTYPE html>
 <html lang="fr">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="{{ asset('styles/dashboard.css') }}">
-        <link rel="stylesheet" href="{{ asset('styles/Document.css') }}">
-        <title>StudySmart - Bibliothèque</title>
-    </head>
-    <body>
-        <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
-        <script src="https://files.bpcontent.cloud/2025/02/12/15/20250212152906-F549H77Y.js"></script>
-
-        <div class="header">
-            <header class="sidebar">
-                <div class="sidebar-header">
-                    <img src="{{ asset('icone/logo.svg') }}" alt="logo" class="logo-icon">
-                    <h1 class="logo">StudySmart</h1>
-                </div>
-
-                <ul class="nav-menu">
-                    <li class="nav-item active">
-                        <div class="nav-link-content">
-                            <div class="icon-container">
-                                <img src="{{ asset('icone/acceuil.svg') }}" alt="logo" class="icon">
-                            </div>
-                            <span class="nav-text">Accueil</span>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <div class="nav-link-content">
-                            <div class="icon-container">
-                                <img src="{{ asset('icone/calendrier.svg') }}" alt="logo" class="icon">
-                            </div>
-                            <span class="nav-text">Calendrier</span>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <div class="nav-link-content">
-                            <div class="icon-container">
-                                <img src="{{ asset('icone/cours.svg') }}" alt="logo" class="icon">
-                            </div>
-                            <span class="nav-text">Cours</span>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <div class="nav-link-content">
-                            <div class="icon-container">
-                                <img src="{{ asset('icone/message.svg') }}" alt="logo" class="icon">
-                                <span class="notification">1</span>
-                            </div>
-                            <span class="nav-text">Messages</span>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ path('app_document') }}" class="nav-link">
-                            <div class="nav-link-content">
-                                <div class="icon-container">
-                                    <img src="{{ asset('icone/pdf.svg') }}" alt="logo" class="icon">
-                                </div>
-                                <span class="nav-text">Dépôts</span>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-                <div class="sidebar-footer">
-                    <div class="nav-item">
-                        <div class="nav-link-content">
-                            <div class="icon-container">
-                                <img src="{{ asset('icone/param.svg') }}" alt="logo" class="icon">
-                            </div>
-                            <span class="nav-text">Paramètres</span>
-                        </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudySmart - Bibliothèque</title>
+    <link rel="stylesheet" href="{{ asset('styles/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/Document.css') }}">
+</head>
+<body>
+    <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
+    <script src="https://files.bpcontent.cloud/2025/02/12/15/20250212152906-F549H77Y.js"></script>
+    
+    <header class="sidebar">
+        <div class="sidebar-header">
+            <img src="{{ asset('icone/logo.svg') }}" alt="Logo StudySmart" class="logo-icon">
+            <h1 class="logo">StudySmart</h1>
+        </div>
+        <nav>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="#">🏠 Accueil</a></li>
+                <li class="nav-item"><a href="#">📅 Calendrier</a></li>
+                <li class="nav-item"><a href="#">📖 Cours</a></li>
+                <li class="nav-item"><a href="#">💬 Messages <span class="notification">1</span></a></li>
+                <li class="nav-item"><a href="{{ path('app_document') }}">📂 Dépôts</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main class="content">
+        <h1>Bienvenue, {{ app.user.firstName }} !</h1>
+        <section class="latest-docs">
+            <h2>📄 Derniers fichiers ajoutés</h2>
+            <div class="latest-docs-container">
+                {% for document in documents|slice(0, 3) %}
+                    <div class="doc-card">
+                        <p>{{ document.nomDuFichier }}</p>
+                        <a href="{{ asset('uploads/pdf/' ~ document.chemin) }}" target="_blank">📥 Télécharger</a>
                     </div>
-                </div>
-            </header>
-
-            <main class="content">
-                <h1>Bienvenue, {{ app.user.firstName }} !</h1>
-
-                <!-- Section des derniers fichiers -->
-                <div class="latest-docs">
-                    <h2>📄 Derniers fichiers ajoutés</h2>
-                    <div class="latest-docs-container">
-                        {% for document in documents|slice(0, 3) %}
-                            <div class="doc-card">
+                {% else %}
+                    <p>Aucun document récent.</p>
+                {% endfor %}
+            </div>
+        </section>
+        
+        <section class="library-container">
+            <div class="library">
+                <h2>📚 Ma Bibliothèque</h2>
+                {% if documents is empty %}
+                    <p>Aucun document disponible.</p>
+                {% else %}
+                    <ul class="document-list">
+                        {% for document in documents %}
+                            <li>
                                 <p>{{ document.nomDuFichier }}</p>
                                 <a href="{{ asset('uploads/pdf/' ~ document.chemin) }}" target="_blank">📥 Télécharger</a>
-                            </div>
-                        {% else %}
-                            <p>Aucun document récent.</p>
+                                <a href="{{ path('document_show', { 'id': document.id }) }}" class="comment-button">💬 Commentaire</a>
+                            </li>
                         {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            
+            <div class="upload-container">
+                <h2>📤 Ajouter un fichier</h2>
+                <form action="{{ path('app_document') }}" method="post" enctype="multipart/form-data" class="upload-form">
+                    {{ form_start(form) }}
+                    <div class="form-group">
+                        <label for="pdfFile">Choisir un fichier PDF :</label>
+                        {{ form_widget(form.pdfFile, {'attr': {'class': 'file-input'}}) }}
+                        <button type="submit" class="submit-button">📎 Upload</button>
                     </div>
-                </div>
-
-                <!-- Bibliothèque & Upload -->
-                <div class="library-container">
-                    <!-- Bibliothèque à gauche -->
-                    <div class="library">
-                        <h2>📚 Ma Bibliothèque</h2>
-                        {% if documents is empty %}
-                            <p>Aucun document disponible.</p>
-                        {% else %}
-                            <ul class="document-list">
-                                {% for document in documents %}
-                                    <li>
-                                        <p>{{ document.nomDuFichier }}</p>
-                                        <a href="{{ asset('uploads/pdf/' ~ document.chemin) }}" target="_blank">📥 Télécharger</a>
-                                        <a href="{{ path('document_show', { 'id': document.id }) }}" class="comment-button">💬 Commentaire</a>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
-                    </div>
-
-                    <!-- Formulaire à droite -->
-                    <div class="upload-container">
-                        <h2>📤 Ajouter un fichier</h2>
-                        <form action="{{ path('app_document') }}" method="post" enctype="multipart/form-data" class="upload-form">
-                            {{ form_start(form) }}
-                            <div class="form-group">
-                                <label for="pdfFile">Choisir un fichier PDF :</label>
-                                {{ form_widget(form.pdfFile, {'attr': {'class': 'file-input'}}) }}
-                                <button type="submit" class="submit-button">📎 Upload</button>
-                            </div>
-                            {{ form_end(form) }}
-                        </form>
-                    </div>
-                </div>
-            </main>
-        </div>
-    </body>
+                    {{ form_end(form) }}
+                </form>
+            </div>
+        </section>
+    </main>
+</body>
 </html>

@@ -1,11 +1,25 @@
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
 document.addEventListener("DOMContentLoaded", function () {
-    let pdfUrl = document.getElementById("pdf-container").getAttribute("data-pdf-url");
     let pdfContainer = document.getElementById("pdf-container");
+    console.log("📂 PDF container trouvé :", pdfContainer);
+
+    let pdfUrl = pdfContainer.getAttribute("data-pdf-url");
+    let documentId = pdfContainer.getAttribute("data-document-id");
+    console.log("🔗 URL du PDF :", pdfUrl);
+    console.log("🆔 ID du document :", documentId);
 
     let isHighlighting = false;
     let isAnnotating = false;
+
+    let annotations = [];
+    try {
+        annotations = JSON.parse(pdfContainer.getAttribute("data-annotations") || "[]");
+        console.log("📌 Annotations chargées depuis l'attribut :", annotations);
+    } catch (error) {
+        console.error("❌ Erreur lors du parsing des annotations :", error);
+        annotations = [];
+    }
 
     let highlightBtn = document.getElementById("highlight-btn");
     let annotateBtn = document.getElementById("annotate-btn");
@@ -17,7 +31,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
             pdf.getPage(pageNum).then(page => {
-                // Créer un conteneur pour chaque page
+                console.log(`📄 Chargement de la page ${pageNum}`);
+
+                let viewport = page.getViewport({ scale: 1.5 });
+                console.log(`🖼️ Viewport pour la page ${pageNum} :`, viewport);
+
                 let pageContainer = document.createElement("div");
                 pageContainer.classList.add("pdf-page-container");
                 pdfContainer.appendChild(pageContainer);
@@ -27,17 +45,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 pageContainer.appendChild(canvas);
 
                 let context = canvas.getContext("2d");
-                let viewport = page.getViewport({ scale: 1.5 });
-
                 canvas.width = viewport.width;
                 canvas.height = viewport.height;
 
                 let renderContext = { canvasContext: context, viewport: viewport };
-                page.render(renderContext);
+                page.render(renderContext).promise.then(() => {
+                    console.log(`✅ Page ${pageNum} rendue`);
+                });
+                
 
-                console.log("📄 Page", pageNum, "rendue.");
-
-                // Créer le canevas pour le surlignage et l'annotation
+                // Ajout du calque de surlignage
                 let highlightCanvas = document.createElement("canvas");
                 highlightCanvas.classList.add("highlight-layer");
                 highlightCanvas.width = viewport.width;
@@ -46,14 +63,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 let highlightContext = highlightCanvas.getContext("2d");
 
-                // Surligner avec la souris
-                let startX, startY, endX, endY, isDrawing = false;
+                // Ajout des annotations après le rendu
+                annotations
+                    .filter(a => a.positionX !== undefined && a.positionY !== undefined)
+                    .forEach(a => {
+                        console.log("📌 Ajout de l'annotation :", a);
+                        let annotation = document.createElement("div");
+                        annotation.classList.add("annotation");
+                        annotation.innerText = a.contenu || "(Annotation vide)";
+                        annotation.style.left = a.positionX * viewport.scale + "px";
+                        annotation.style.top = a.positionY * viewport.scale + "px";
+                        pageContainer.appendChild(annotation);
+                        console.log("📋 Contenu de pageContainer après annotations :", pageContainer.innerHTML);
 
+                    });
+
+                // Gestion du surlignage
+                let startX, startY, endX, endY, isDrawing = false;
                 highlightCanvas.addEventListener("mousedown", function (e) {
                     if (!isHighlighting) return;
                     isDrawing = true;
                     startX = e.offsetX;
                     startY = e.offsetY;
+                    console.log("✏️ Début du surlignage :", { startX, startY });
                 });
 
                 highlightCanvas.addEventListener("mousemove", function (e) {
@@ -63,74 +95,90 @@ document.addEventListener("DOMContentLoaded", function () {
                     highlightContext.clearRect(0, 0, highlightCanvas.width, highlightCanvas.height);
                     highlightContext.fillStyle = "rgba(255, 255, 0, 0.5)";
                     highlightContext.fillRect(startX, startY, endX - startX, endY - startY);
+                    console.log("🖍️ Surlignage en cours :", { endX, endY });
                 });
 
                 highlightCanvas.addEventListener("mouseup", function () {
                     isDrawing = false;
-                    highlightContext.fillStyle = "rgba(255, 255, 0, 0.5)";
-                    highlightContext.fillRect(startX, startY, endX - startX, endY - startY);
+                    console.log("✅ Surlignage terminé");
+                });
+
+                // Gestion du clic pour ajouter une annotation
+                pageContainer.addEventListener("click", function (event) {
+                    if (!isAnnotating) return;
+                    let annotationText = prompt("Entrez votre annotation :");
+                    if (!annotationText) return;
+
+                    let annotation = document.createElement("div");
+                    annotation.classList.add("annotation");
+                    annotation.innerText = annotationText;
+
+                    let pageRect = event.target.getBoundingClientRect();
+                    let scale = viewport.scale;
+                    let positionX = (event.clientX - pageRect.left) / scale;
+                    let positionY = (event.clientY - pageRect.top) / scale;
+
+                    annotation.style.left = positionX * scale + "px";
+                    annotation.style.top = positionY * scale + "px";
+                    annotation.style.zIndex = 999;
+                    pageContainer.appendChild(annotation);
+                    console.log("📌 Annotation ajoutée :", { annotationText, positionX, positionY });
+
+                    // Enregistrement en base de données
+                    fetch('/annotation/save', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            documentId: documentId,
+                            contenu: annotationText,
+                            positionX: positionX,
+                            positionY: positionY
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            console.log("✅ Annotation enregistrée avec succès :", data.annotation);
+                        } else {
+                            console.error("❌ Erreur lors de l'enregistrement de l'annotation :", data.error);
+                        }
+                    })
+                    .catch(error => {
+                        console.error("❌ Erreur de communication :", error);
+                    });
                 });
             });
         }
     });
 
     // Gestion des modes
+    function updateMode() {
+        console.log("🔄 Mise à jour du mode : highlighting =", isHighlighting, ", annotating =", isAnnotating);
+        highlightBtn.style.backgroundColor = isHighlighting ? "#ffcc00" : "";
+        annotateBtn.style.backgroundColor = isAnnotating ? "#00ccff" : "";
+        exitModeBtn.style.display = (isHighlighting || isAnnotating) ? "inline-block" : "none";
+    }
+
     highlightBtn.addEventListener("click", function () {
         isHighlighting = true;
         isAnnotating = false;
-        console.log(isHighlighting, isAnnotating);
+        console.log("✏️ Mode surlignage activé");
         updateMode();
     });
 
     annotateBtn.addEventListener("click", function () {
         isAnnotating = true;
         isHighlighting = false;
-        console.log(isHighlighting, isAnnotating);
+        console.log("📝 Mode annotation activé");
         updateMode();
     });
 
     exitModeBtn.addEventListener("click", function () {
         isHighlighting = false;
         isAnnotating = false;
-        console.log(isHighlighting, isAnnotating);
+        console.log("🚫 Mode interactif désactivé");
         updateMode();
     });
+    console.log("📌 Détail des annotations récupérées :", annotations);
 
-    function updateMode() {
-        console.log("🔄 Mise à jour des modes :", { isHighlighting, isAnnotating });
-        highlightBtn.style.backgroundColor = isHighlighting ? "#ffcc00" : "";
-        annotateBtn.style.backgroundColor = isAnnotating ? "#00ccff" : "";
-        exitModeBtn.style.display = (isHighlighting || isAnnotating) ? "inline-block" : "none";
-    }
-
-    // Gestion des annotations
-    pdfContainer.addEventListener("click", function (event) {
-        if (!isAnnotating) return;
-    
-        let annotationText = prompt("Entrez votre annotation :");
-        if (!annotationText) return;
-    
-        let annotation = document.createElement("div");
-        annotation.classList.add("annotation");
-        annotation.innerText = annotationText;
-    
-        let pageRect = event.target.getBoundingClientRect();
-        annotation.style.left = (event.clientX - pageRect.left) + "px";
-        annotation.style.top = (event.clientY - pageRect.top) + "px";
-    
-        console.log("📌 Position annotation :", annotation.style.left, annotation.style.top);
-    
-        // Ajouter un bouton pour supprimer l'annotation
-        let deleteBtn = document.createElement("button");
-        deleteBtn.innerText = "❌";
-        deleteBtn.style.marginLeft = "5px";
-        deleteBtn.onclick = (e) => {
-            e.stopPropagation(); // Empêcher l'activation du gestionnaire de clic lors de la suppression
-            annotation.remove();
-        };
-        annotation.appendChild(deleteBtn);
-    
-        pdfContainer.appendChild(annotation);
-    });
-    
 });
