@@ -11,6 +11,7 @@
         "doctrine/doctrine-bundle": "^2.13",
         "doctrine/doctrine-migrations-bundle": "^3.4",
         "doctrine/orm": "^3.3",
+        "johngrogg/ics-parser": "^3.4",
         "symfony/asset": "7.2.*",
         "symfony/asset-mapper": "7.2.*",
         "symfony/console": "7.2.*",
@@ -18,10 +19,13 @@
         "symfony/flex": "^2",
         "symfony/form": "7.2.*",
         "symfony/framework-bundle": "7.2.*",
+        "symfony/http-client": "7.2.*",
         "symfony/runtime": "7.2.*",
         "symfony/security-bundle": "7.2.*",
+        "symfony/stimulus-bundle": "^2.23",
         "symfony/twig-bundle": "7.2.*",
         "symfony/validator": "7.2.*",
+        "symfony/webpack-encore-bundle": "^2.2",
         "symfony/yaml": "7.2.*"
     },
     "require-dev": {
