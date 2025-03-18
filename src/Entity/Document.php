@@ -30,6 +30,9 @@ class Document
     #[ORM\OneToMany(targetEntity: DocumentCommentaire::class, mappedBy: 'Document')]
     private Collection $documentCommentaires;
 
+    #[ORM\ManyToOne(inversedBy: 'documents')]
+    private ?User $user = null;
+
     public function __construct()
     {
         $this->documentCommentaires = new ArrayCollection();
@@ -102,6 +105,18 @@ class Document
                 $documentCommentaire->setDocument(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

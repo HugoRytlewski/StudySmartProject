@@ -13,12 +13,18 @@ use App\Entity\Document;
 use App\Form\DocumentType;
 use App\Entity\DocumentCommentaire;
 use App\Form\CommentaireDocumentType;
+use Symfony\Bundle\SecurityBundle\Security;
 
 final class DocumentController extends AbstractController{
     #[Route('/document', name: 'app_document')]
-    public function index(EntityManagerInterface $em, Request $request, SluggerInterface $slugger): Response
+    public function index(EntityManagerInterface $em, Request $request, SluggerInterface $slugger, Security $security): Response
     {
-        $documents = $em->getRepository(Document::class)->findBy([], ['uploadAt' => 'DESC']);
+        $user = $security->getUser();
+        if (!$user) {
+            throw $this->createAccessDeniedException("Vous devez être connecté pour voir vos documents.");
+        }
+
+        $documents = $em->getRepository(Document::class)->findBy(['user' => $user], ['uploadAt' => 'DESC']);
 
         $document = new Document();
         $form = $this->createForm(DocumentType::class, $document);
@@ -41,6 +47,7 @@ final class DocumentController extends AbstractController{
                 $document->setNomDuFichier($originalFilename);
                 $document->setChemin($newFilename);
                 $document->setUploadAt(new \DateTimeImmutable());
+                $document->setUser($user); 
 
                 $em->persist($document);
                 $em->flush();
@@ -57,8 +64,12 @@ final class DocumentController extends AbstractController{
     }
 
     #[Route('/document/{id}', name: 'document_show')]
-public function show(Document $document, Request $request, EntityManagerInterface $em): Response
+public function show(Document $document, Request $request, EntityManagerInterface $em, Security $security): Response
 {
+    $user = $security->getUser();
+        if ($document->getUser() !== $user) {
+            throw $this->createAccessDeniedException("Vous n'avez pas accès à ce document.");
+        }
     // Récupérer les commentaires existants
     $commentaires = $document->getDocumentCommentaires();
 

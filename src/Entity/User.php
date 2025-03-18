@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -56,6 +58,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         minMessage: "Le mot de passe doit faire au moins {{ limit }} caractères"
     )]
     private ?string $password = null;
+
+    /**
+     * @var Collection<int, Document>
+     */
+    #[ORM\OneToMany(targetEntity: Document::class, mappedBy: 'user')]
+    private Collection $documents;
+
+    public function __construct()
+    {
+        $this->documents = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -155,5 +168,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getFullName(): string
     {
         return $this->firstName . ' ' . $this->lastName;
+    }
+
+    /**
+     * @return Collection<int, Document>
+     */
+    public function getDocuments(): Collection
+    {
+        return $this->documents;
+    }
+
+    public function addDocument(Document $document): static
+    {
+        if (!$this->documents->contains($document)) {
+            $this->documents->add($document);
+            $document->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDocument(Document $document): static
+    {
+        if ($this->documents->removeElement($document)) {
+            // set the owning side to null (unless already changed)
+            if ($document->getUser() === $this) {
+                $document->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

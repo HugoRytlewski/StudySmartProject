@@ -10,7 +10,7 @@
     <body>
         <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
         <script src="https://files.bpcontent.cloud/2025/02/12/15/20250212152906-F549H77Y.js"></script>
-        
+
         <div class="header">
             <header class="sidebar">
                 <div class="sidebar-header">
@@ -76,6 +76,8 @@
             </header>
 
             <main class="content">
+                <h1>Bienvenue, {{ app.user.firstName }} !</h1>
+
                 <!-- Section des derniers fichiers -->
                 <div class="latest-docs">
                     <h2>📄 Derniers fichiers ajoutés</h2>
@@ -96,17 +98,19 @@
                     <!-- Bibliothèque à gauche -->
                     <div class="library">
                         <h2>📚 Ma Bibliothèque</h2>
-                        <ul class="document-list">
-                           {% for document in documents %}
-                                <li>
-                                    <p>{{ document.nomDuFichier }}</p>
-                                    <a href="{{ asset('uploads/pdf/' ~ document.chemin) }}" target="_blank">📥 Télécharger</a>
-                                    <a href="{{ path('document_show', { 'id': document.id }) }}" class="comment-button">💬 Commentaire</a>
-                                </li>
-                            {% else %}
-                                <p>Aucun document disponible.</p>
-                            {% endfor %}
-                        </ul>
+                        {% if documents is empty %}
+                            <p>Aucun document disponible.</p>
+                        {% else %}
+                            <ul class="document-list">
+                                {% for document in documents %}
+                                    <li>
+                                        <p>{{ document.nomDuFichier }}</p>
+                                        <a href="{{ asset('uploads/pdf/' ~ document.chemin) }}" target="_blank">📥 Télécharger</a>
+                                        <a href="{{ path('document_show', { 'id': document.id }) }}" class="comment-button">💬 Commentaire</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
                     </div>
 
                     <!-- Formulaire à droite -->
@@ -125,7 +129,5 @@
                 </div>
             </main>
         </div>
-
-        
     </body>
 </html>
