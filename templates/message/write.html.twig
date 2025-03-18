@@ -1,0 +1,50 @@
+{# templates/message/write.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Écrire un message{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="h3 mb-0">Nouveau message</h1>
+                </div>
+                <div class="card-body">
+                    {{ form_start(form, {'attr': {'class': 'message-form'}}) }}
+                    
+                    <div class="form-group">
+                        {{ form_label(form.recipient) }}
+                        {{ form_widget(form.recipient, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.recipient) }}
+                    </div>
+
+                    <div class="form-group mt-3">
+                        {{ form_label(form.subject) }}
+                        {{ form_widget(form.subject, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.subject) }}
+                    </div>
+
+                    <div class="form-group mt-3">
+                        {{ form_label(form.content) }}
+                        {{ form_widget(form.content) }}
+                        {{ form_errors(form.content) }}
+                    </div>
+
+                    <div class="form-group mt-4">
+                        <button type="submit" class="btn btn-primary">
+                            Envoyer le message
+                        </button>
+                        <a href="{{ path('messages_index') }}" class="btn btn-secondary">
+                            Annuler
+                        </a>
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

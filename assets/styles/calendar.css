@@ -1,0 +1,21 @@
+#calendar {
+    width: 100%;
+    height: calc(100vh - 50px); /* Utilise toute la hauteur de l'écran moins un petit espace pour éviter les barres de défilement */
+    margin: 0 auto; /* Centre le calendrier */
+    font-size: 0.9rem; /* Réduit la taille du texte */
+    overflow-y: auto; /* Permet le défilement uniquement à l'intérieur du calendrier */
+    padding-left: 100px; /* Assure que le calendrier n'est pas recouvert par la sidebar */
+}
+
+#calendar-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+#calendar-controls input {
+    padding: 5px;
+    width: 250px;
+}
