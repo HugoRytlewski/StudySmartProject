@@ -1,79 +1,23 @@
-<!DOCTYPE html>
-<html lang="fr">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+{# templates/message/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
         <link rel="stylesheet" href="{{ asset('styles/dashboard.css') }}">
-        <link rel="stylesheet" href="{{ asset('styles/Document.css') }}">
+        <link rel="stylesheet" href="{{ asset('styles/Document.css') }}">{% endblock %}
+
+{% block body %}
+
+
+    <head>
+   
         <title>StudySmart - Bibliothèque</title>
     </head>
     <body>
-        <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
-        <script src="https://files.bpcontent.cloud/2025/02/12/15/20250212152906-F549H77Y.js"></script>
+ 
 
         <div class="header">
-            <header class="sidebar">
-                <div class="sidebar-header">
-                    <img src="{{ asset('icone/logo.svg') }}" alt="logo" class="logo-icon">
-                    <h1 class="logo">StudySmart</h1>
-                </div>
-
-                <ul class="nav-menu">
-                    <li class="nav-item active">
-                        <div class="nav-link-content">
-                            <div class="icon-container">
-                                <img src="{{ asset('icone/acceuil.svg') }}" alt="logo" class="icon">
-                            </div>
-                            <span class="nav-text">Accueil</span>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <div class="nav-link-content">
-                            <div class="icon-container">
-                                <img src="{{ asset('icone/calendrier.svg') }}" alt="logo" class="icon">
-                            </div>
-                            <span class="nav-text">Calendrier</span>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <div class="nav-link-content">
-                            <div class="icon-container">
-                                <img src="{{ asset('icone/cours.svg') }}" alt="logo" class="icon">
-                            </div>
-                            <span class="nav-text">Cours</span>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <div class="nav-link-content">
-                            <div class="icon-container">
-                                <img src="{{ asset('icone/message.svg') }}" alt="logo" class="icon">
-                                <span class="notification">1</span>
-                            </div>
-                            <span class="nav-text">Messages</span>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ path('app_document') }}" class="nav-link">
-                            <div class="nav-link-content">
-                                <div class="icon-container">
-                                    <img src="{{ asset('icone/pdf.svg') }}" alt="logo" class="icon">
-                                </div>
-                                <span class="nav-text">Dépôts</span>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-                <div class="sidebar-footer">
-                    <div class="nav-item">
-                        <div class="nav-link-content">
-                            <div class="icon-container">
-                                <img src="{{ asset('icone/param.svg') }}" alt="logo" class="icon">
-                            </div>
-                            <span class="nav-text">Paramètres</span>
-                        </div>
-                    </div>
-                </div>
-            </header>
+        
 
             <main class="content">
                 <h1>Bienvenue, {{ app.user.firstName }} !</h1>
@@ -131,3 +75,4 @@
         </div>
     </body>
 </html>
+{% endblock %}

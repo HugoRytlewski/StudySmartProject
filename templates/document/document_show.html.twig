@@ -18,7 +18,7 @@
    
     <div class="container">
         <div class="pdf-viewer">
-            <div id="pdf-container" data-pdf-url="{{ asset('uploads/pdf/' ~ document.chemin) }}"></div>
+            <div id="pdf-container" class="pdf-container" data-pdf-url="{{ asset('uploads/pdf/' ~ document.chemin) }}"></div>
         </div>
 
         <div class="comments-section">
@@ -46,6 +46,7 @@
         <div class="button">
             <button id="highlight-btn">🖍 Surligner</button>
             <button id="annotate-btn">✏️ Ajouter Annotation</button>
+            <a href={{ path('document_reformule', {'id': document.id}) }} id="reformulate-btn">🔄 Reformuler grace a l'ia </button> 
             <button id="exit-mode-btn" style="display: none;">❌ Quitter le mode</button>
         </div>
     </div>

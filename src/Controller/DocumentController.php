@@ -14,6 +14,8 @@ use App\Form\DocumentType;
 use App\Entity\DocumentCommentaire;
 use App\Form\CommentaireDocumentType;
 use Symfony\Bundle\SecurityBundle\Security;
+use App\Service\OpenRouterService;
+use League\CommonMark\CommonMarkConverter;
 
 final class DocumentController extends AbstractController{
     #[Route('/document', name: 'app_document')]
@@ -97,5 +99,26 @@ public function show(Document $document, Request $request, EntityManagerInterfac
     ]);
 }
 
+#[Route('/document/{id}/reformule', name: 'document_reformule')]
+public function reformule(Document $document, EntityManagerInterface $em, Security $security, OpenRouterService $openAi): Response
+{
+    $user = $security->getUser();
+        if ($document->getUser() !== $user) {
+            throw $this->createAccessDeniedException("Vous n'avez pas accès à ce document.");
+        }   
 
+        $parser = new \Smalot\PdfParser\Parser();
+        $pdf = $parser->parseFile('../public/uploads/pdf/' . $document->getChemin());        
+        $text = $pdf->getText();
+        $result = $openAi->getResponse($text);
+        $content = $result['choices'][0]['message']['content'];
+
+        $converter = new CommonMarkConverter();
+        $htmlContent = $converter->convert($content);
+
+        return $this->render('document/reformule.html.twig', [
+            'document' => $document,
+            'reformulatedContent' => $htmlContent,
+        ]);
+}
 }
