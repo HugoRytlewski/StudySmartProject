@@ -16,6 +16,15 @@ class DocumentRepository extends ServiceEntityRepository
         parent::__construct($registry, Document::class);
     }
 
+    public function findByUser(User $user): array
+    {
+        return $this->createQueryBuilder('d')
+            ->andWhere('d.owner = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Document[] Returns an array of Document objects
 //     */

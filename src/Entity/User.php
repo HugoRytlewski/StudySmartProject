@@ -68,7 +68,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->events = new ArrayCollection();
-    }
+      
+     /**
+     * @var Collection<int, Document>
+     */
+    #[ORM\OneToMany(targetEntity: Document::class, mappedBy: 'user')]
+    private Collection $documents;
+
 
     public function getId(): ?int
     {
@@ -183,17 +189,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if (!$this->events->contains($event)) {
             $this->events->add($event);
             $event->setUser($this);
+     * @return Collection<int, Document>
+     */
+    public function getDocuments(): Collection
+    {
+        return $this->documents;
+    }
+
+    public function addDocument(Document $document): static
+    {
+        if (!$this->documents->contains($document)) {
+            $this->documents->add($document);
+            $document->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeEvent(Event $event): static
+    public function removeDocument(Document $document): static
     {
-        if ($this->events->removeElement($event)) {
+        if ($this->documents->removeElement($document)) {
             // set the owning side to null (unless already changed)
-            if ($event->getUser() === $this) {
-                $event->setUser(null);
+            if ($document->getUser() === $this) {
+                $document->setUser(null);
             }
         }
 

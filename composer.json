@@ -12,6 +12,8 @@
         "doctrine/doctrine-migrations-bundle": "^3.4",
         "doctrine/orm": "^3.3",
         "johngrogg/ics-parser": "^3.4",
+        "league/commonmark": "^2.6",
+        "smalot/pdfparser": "^2.11",
         "symfony/asset": "7.2.*",
         "symfony/asset-mapper": "7.2.*",
         "symfony/console": "7.2.*",

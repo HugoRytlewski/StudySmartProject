@@ -12,6 +12,7 @@
     max-height: 800px; /* Limite maximale pour la hauteur */
     border: 1px solid #ccc; /* Optionnel : pour mieux voir la bordure */
     overflow: auto;
+    position: relative;
     
 }
 .comments-section {
