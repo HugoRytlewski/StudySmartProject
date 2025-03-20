@@ -60,15 +60,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     /**
+     * @var Collection<int, Event>
+     */
+    #[ORM\OneToMany(targetEntity: Event::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $events;
+
+    public function __construct()
+    {
+        $this->events = new ArrayCollection();
+      
+     /**
      * @var Collection<int, Document>
      */
     #[ORM\OneToMany(targetEntity: Document::class, mappedBy: 'user')]
     private Collection $documents;
 
-    public function __construct()
-    {
-        $this->documents = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -171,6 +177,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
+     * @return Collection<int, Event>
+     */
+    public function getEvents(): Collection
+    {
+        return $this->events;
+    }
+
+    public function addEvent(Event $event): static
+    {
+        if (!$this->events->contains($event)) {
+            $this->events->add($event);
+            $event->setUser($this);
      * @return Collection<int, Document>
      */
     public function getDocuments(): Collection
