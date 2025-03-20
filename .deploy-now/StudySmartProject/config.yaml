@@ -14,8 +14,8 @@ deploy:
     post-deployment-remote-commands:
       - mkdir -p var/log var/cache
       - chmod -R 775 var
-      - APP_ENV=prod APP_DEBUG=0 php bin/console cache:clear
-      - APP_ENV=prod APP_DEBUG=0 php bin/console cache:warmup
+      -  php bin/console cache:clear
+      -  php bin/console cache:warmup
 
   # configuration part, which is taken at ALL FURTHER deployments of this branch
   recurring:
