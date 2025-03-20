@@ -62,19 +62,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Event>
      */
-    #[ORM\OneToMany(targetEntity: Event::class, mappedBy: 'user', orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Event::class, orphanRemoval: true)]
     private Collection $events;
+
+    /**
+     * @var Collection<int, Document>
+     */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Document::class)]
+    private Collection $documents;
 
     public function __construct()
     {
         $this->events = new ArrayCollection();
-      
-     /**
-     * @var Collection<int, Document>
-     */
-    #[ORM\OneToMany(targetEntity: Document::class, mappedBy: 'user')]
-    private Collection $documents;
-
+        $this->documents = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -189,6 +190,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if (!$this->events->contains($event)) {
             $this->events->add($event);
             $event->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvent(Event $event): static
+    {
+        if ($this->events->removeElement($event)) {
+            // set the owning side to null (unless already changed)
+            if ($event->getUser() === $this) {
+                $event->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
      * @return Collection<int, Document>
      */
     public function getDocuments(): Collection
