@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bundle\SecurityBundle\Security;
 
 
 final class FrontController extends AbstractController{
@@ -17,26 +18,30 @@ final class FrontController extends AbstractController{
     }
 
     #[Route('/dashboard', name: 'app_dashboard')]
-public function home(): Response 
-{
-    $user = $this->getUser();
-    return $this->render('front/index.html.twig', [
-        'nom' => $user->getFirstName(),
-        'phrase_motivation' => 'Phrase de motivation !',
-        'evenement' => [
-            'matiere' => 'Anglais',
-            'description' => 'Faire la vidéo',
-            'date' => '05/04/2025'
-        ],
-        'calendrier' => [
-            'nom' => 'CV UE310',
-            'debut' => '18h00',
-            'fin' => '19h00'
-        ],
-        'message' => [
-            'auteur' => 'Hillel',
-            'texte' => "T'a fait l'anglais ??"
-        ]
-    ]);
-}
+    public function home(Security $security): Response 
+    {
+        $user = $security->getUser();
+        if (!$user) {
+            throw $this->createAccessDeniedException("Vous devez être connecté pour accéder au dashboard.");
+        }
+        
+        return $this->render('front/index.html.twig', [
+            'nom' => $user->getFirstName(),
+            'phrase_motivation' => 'Phrase de motivation !',
+            'evenement' => [
+                'matiere' => 'Anglais',
+                'description' => 'Faire la vidéo',
+                'date' => '05/04/2025'
+            ],
+            'calendrier' => [
+                'nom' => 'CV UE310',
+                'debut' => '18h00',
+                'fin' => '19h00'
+            ],
+            'message' => [
+                'auteur' => 'Hillel',
+                'texte' => "T'a fait l'anglais ??"
+            ]
+        ]);
+    }
 }
