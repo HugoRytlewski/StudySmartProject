@@ -14,8 +14,9 @@ deploy:
     post-deployment-remote-commands:
       - mkdir -p var/log var/cache
       - chmod -R 775 var
-      -  php bin/console cache:clear
-      -  php bin/console cache:warmup
+      # Assuming PHP is available during build
+      # - php bin/console cache:clear
+      # - php bin/console cache:warmup
 
   # configuration part, which is taken at ALL FURTHER deployments of this branch
   recurring:
@@ -33,8 +34,9 @@ deploy:
     # commands that are executed at the real webspace NOT at build servers AFTER copying new files
     post-deployment-remote-commands:
       - chmod -R 775 var
-      - APP_ENV=prod APP_DEBUG=0 php bin/console cache:clear
-      - APP_ENV=prod APP_DEBUG=0 php bin/console cache:warmup
+      # Assuming PHP is available during build
+      # - APP_ENV=prod APP_DEBUG=0 php bin/console cache:clear
+      # - APP_ENV=prod APP_DEBUG=0 php bin/console cache:warmup
 
 # uncomment the following lines to configure cron jobs
 #runtime:
