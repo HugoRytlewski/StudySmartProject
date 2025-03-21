@@ -1,29 +1,17 @@
-<IfModule mod_rewrite.c>
-    RewriteEngine On
-
-    # Redirection vers le front controller de Symfony (public/index.php)
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ /index.php/$1 [QSA,L]
-</IfModule>
-
-# Configuration PHP
+# Habilitar el registro de errores de PHP
 php_flag log_errors on
-php_value error_log "/var/www/html/mon-projet/var/log/php-errors.log"
-php_flag display_errors off
-php_value error_reporting -1
+php_value error_log /logs/php-errors.log
 
-# Sécurité : Empêcher l'accès aux fichiers sensibles
-<FilesMatch "(\.env|\.htaccess|\.git|composer\.(lock|json)|symfony\.lock|package(-lock)?\.json|yarn\.lock)">
-    Require all denied
-</FilesMatch>
+# Mostrar errores (solo en entornos de desarrollo, desactívalo en producción)
+php_flag display_errors on
+php_value error_reporting 32767
 
-# Compression Gzip
+# Configuración de compresión para mejorar el rendimiento
 <IfModule mod_deflate.c>
     AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
 </IfModule>
 
-# Cache-Control pour améliorer les performances
+# Configuración de caché para mejorar el rendimiento
 <IfModule mod_expires.c>
     ExpiresActive On
     ExpiresByType image/jpg "access plus 1 year"
@@ -31,8 +19,30 @@ php_value error_reporting -1
     ExpiresByType image/gif "access plus 1 year"
     ExpiresByType image/png "access plus 1 year"
     ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/pdf "access plus 1 month"
     ExpiresByType text/javascript "access plus 1 month"
     ExpiresByType application/javascript "access plus 1 month"
     ExpiresByType application/x-javascript "access plus 1 month"
+    ExpiresByType application/x-shockwave-flash "access plus 1 month"
     ExpiresByType image/x-icon "access plus 1 year"
+    ExpiresDefault "access plus 2 days"
 </IfModule>
+
+# Redirección a HTTPS
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+</IfModule>
+
+# Proteger el archivo .htaccess
+<Files .htaccess>
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+# Proteger el archivo error_log
+<Files php-errors.log>
+    Order Allow,Deny
+    Deny from all
+</Files>
