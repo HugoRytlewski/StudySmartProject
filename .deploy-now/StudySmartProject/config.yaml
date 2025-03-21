@@ -12,6 +12,7 @@ deploy:
       - output.log
     # commands that are executed at the real webspace NOT at build servers AFTER copying new files
     post-deployment-remote-commands:
+      - composer install --no-dev --optimize-autoloader 
       - mkdir -p var/log var/cache
       - chmod -R 775 var
       # Assuming PHP is available during build
