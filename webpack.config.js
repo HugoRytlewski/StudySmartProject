@@ -21,13 +21,7 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/app.js')
-    .addEntry('dashboard', './assets/styles/dashboard.css')
-    .addEntry('calendar', './assets/styles/calendar.css')
-    .addEntry('fullcalendar', './assets/styles/fullcalendar.css')
-    .addEntry('fullcalendar', './assets/styles/fullcalendar.css')
-    .addEntry('app', './assets/styles/app.css')
-    .addEntry('auth', './assets/styles/auth.css')
-    .addEntry('document', './assets/styles/document.css')
+
 
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
