@@ -55,7 +55,7 @@ Encore
 
     // Configure Webpack Dev Server options correctly using a callback
     .configureDevServerOptions((devServerOptions) => {
-        devServerOptions.port = 8080;  // Choisis un port libre, comme 8080
+        devServerOptions.port = 3000;  // Choisis un port libre, comme 8080
         devServerOptions.open = true;   // Ouvre automatiquement le navigateur
         devServerOptions.hot = true;    // Active le rechargement à chaud (HMR)
         return devServerOptions;       // Retourne les options modifiées
