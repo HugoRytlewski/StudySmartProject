@@ -46,6 +46,13 @@ Encore
     // .configureBabel((config) => {
     //     config.plugins.push('@babel/a-babel-plugin');
     // })
+
+    .configureDevServerOptions({
+        port: 8080,  // Choisis un port libre, comme 8080
+        open: true,   // Cela ouvre automatiquement le navigateur
+        hot: true     // Hot module replacement (HMR) pour le rechargement automatique
+    })
+    
     .configureBabel((config) => {
         config.exclude = /node_modules\/(?!(.*fullcalendar.*)\/).*/;
     })
