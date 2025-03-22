@@ -1,14 +1,10 @@
-const Encore = require('@symfony/webpack-encore');
+import './bootstrap.js';
+/*
+ * Welcome to your app's main JavaScript file!
+ *
+ * This file will be included onto the page via the importmap() Twig function,
+ * which should already be in your base.html.twig.
+ */
+import './styles/app.css';
 
-Encore
-    // répertoire où Webpack va stocker les fichiers compilés
-    .setOutputPath('public/build/')
-    .setPublicPath('/build')
-
-    // entrée de l'application
-    .addEntry('app', './assets/app.js')
-
-    // autres configurations...
-;
-
-module.exports = Encore.getWebpackConfig();
+console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
