@@ -5,8 +5,8 @@
         "@symfony/webpack-encore": "^5.0.0",
         "core-js": "^3.38.0",
         "regenerator-runtime": "^0.13.9",
-        "webpack": "^5.74.0",
-        "webpack-cli": "^5.1.0",
+        "webpack": "^5.98.0",
+        "webpack-cli": "^5.1.4",
         "webpack-dev-server": "^5.2.0",
         "webpack-notifier": "^1.15.0"
     },
@@ -14,9 +14,10 @@
     "private": true,
     "scripts": {
         "dev-server": "encore dev-server",
-        "dev": "encore dev",
+        "dev": "webpack --mode development",
         "watch": "encore dev --watch",
-        "build": "encore production --progress"
+        "build": "webpack --mode production"
+        
     },
     "dependencies": {
         "@fullcalendar/core": "^6.1.15",
