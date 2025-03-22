@@ -1,4 +1,15 @@
-# Utilisation de PHP 8.2 avec Apache
+# Étape 1 : Builder les assets avec Node.js
+FROM node:18 AS builder
+
+WORKDIR /app
+
+# Copier les fichiers nécessaires pour l'installation
+COPY package.json package-lock.json ./
+
+# Installer les dépendances et builder les assets
+RUN npm install && npm run build
+
+# Étape 2 : Utilisation de PHP 8.2 avec Apache
 FROM php:8.2-apache
 
 # Installer les extensions PHP nécessaires
