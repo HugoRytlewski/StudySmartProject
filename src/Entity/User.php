@@ -48,6 +48,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private array $roles = [];
 
+    /**
+     * @var string The hashed password
+     */
     #[ORM\Column]
     #[Assert\NotBlank(message: "Le mot de passe est obligatoire")]
     #[Assert\Length(
@@ -56,9 +59,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     )]
     private ?string $password = null;
 
+    /**
+     * @var Collection<int, Event>
+     */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Event::class, orphanRemoval: true)]
     private Collection $events;
 
+    /**
+     * @var Collection<int, Document>
+     */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Document::class)]
     private Collection $documents;
 
@@ -109,14 +118,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
     }
 
+    /**
+     * @see UserInterface
+     */
     public function getRoles(): array
     {
         $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
@@ -129,6 +147,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * @see PasswordAuthenticatedUserInterface
+     */
     public function getPassword(): string
     {
         return $this->password;
@@ -141,16 +162,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * @see UserInterface
+     */
     public function eraseCredentials(): void
     {
-        // Clear temporary, sensitive data here, if any.
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 
+    // Optionnel : Méthode pour obtenir le nom complet
     public function getFullName(): string
     {
         return $this->firstName . ' ' . $this->lastName;
     }
 
+    /**
+     * @return Collection<int, Event>
+     */
     public function getEvents(): Collection
     {
         return $this->events;
@@ -169,6 +198,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeEvent(Event $event): static
     {
         if ($this->events->removeElement($event)) {
+            // set the owning side to null (unless already changed)
             if ($event->getUser() === $this) {
                 $event->setUser(null);
             }
@@ -177,6 +207,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * @return Collection<int, Document>
+     */
     public function getDocuments(): Collection
     {
         return $this->documents;
@@ -195,6 +228,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeDocument(Document $document): static
     {
         if ($this->documents->removeElement($document)) {
+            // set the owning side to null (unless already changed)
             if ($document->getUser() === $this) {
                 $document->setUser(null);
             }

@@ -17,9 +17,10 @@ return [
         'entrypoint' => true,
     ],
     '@hotwired/stimulus' => [
-        'path' => './node_modules/@hotwired/stimulus/dist/stimulus.js',
+        'version' => '3.2.2',
     ],
     '@symfony/stimulus-bundle' => [
         'path' => './vendor/symfony/stimulus-bundle/assets/dist/loader.js',
     ],
+
 ];
