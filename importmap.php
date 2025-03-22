@@ -17,8 +17,7 @@ return [
         'entrypoint' => true,
     ],
     '@hotwired/stimulus' => [
-        'version' => '3.2.2',
-        // La clé "url" n'est pas valide, donc je l'ai supprimée
+        'path' => './node_modules/@hotwired/stimulus/dist/stimulus.js',
     ],
     '@symfony/stimulus-bundle' => [
         'path' => './vendor/symfony/stimulus-bundle/assets/dist/loader.js',
