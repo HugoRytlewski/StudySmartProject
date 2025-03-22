@@ -16,6 +16,7 @@ WORKDIR /var/www/html
 
 # Copier les fichiers de l'application
 COPY . .
+COPY --from=builder /app/public/build /var/www/html/build
 
 # Créer un utilisateur "symfony" pour éviter les problèmes liés à root
 RUN useradd -m symfony && chown -R symfony /var/www/html
