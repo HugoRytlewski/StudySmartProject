@@ -21,7 +21,6 @@ return [
     ],
     '@hotwired/stimulus' => [
         'path' => './node_modules/@hotwired/stimulus/dist/stimulus.umd.js',
-        'version' => '3.2.2',
     ],
 
 
