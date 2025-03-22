@@ -18,6 +18,7 @@ return [
     ],
     '@hotwired/stimulus' => [
         'version' => '3.2.2',
+        'url' => 'https://ga.jspm.io/npm:@hotwired/stimulus@3.2.2/dist/stimulus.js',
     ],
     '@symfony/stimulus-bundle' => [
         'path' => './vendor/symfony/stimulus-bundle/assets/dist/loader.js',
