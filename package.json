@@ -2,7 +2,7 @@
     "devDependencies": {
         "@babel/core": "^7.17.0",
         "@babel/preset-env": "^7.16.0",
-        "@symfony/webpack-encore": "^5.0.0",
+        "@symfony/webpack-encore": "^5.1.0",
         "core-js": "^3.38.0",
         "regenerator-runtime": "^0.13.9",
         "webpack": "^5.74.0",
@@ -22,6 +22,7 @@
         "@fullcalendar/core": "^6.1.15",
         "@fullcalendar/daygrid": "^6.1.15",
         "@fullcalendar/interaction": "^6.1.15",
-        "@fullcalendar/timegrid": "^6.1.15"
+        "@fullcalendar/timegrid": "^6.1.15",
+        "@symfony/stimulus-bundle": "^2.23.0"
     }
 }
