@@ -43,9 +43,6 @@ Encore
     .enableVersioning()
 
     // configure Babel
-    // .configureBabel((config) => {
-    //     config.plugins.push('@babel/a-babel-plugin');
-    // })
     .configureBabel((config) => {
         config.exclude = /node_modules\/(?!(.*fullcalendar.*)\/).*/;
     })
@@ -56,27 +53,12 @@ Encore
         config.corejs = '3.38';
     })
 
-    // enables Sass/SCSS support
-    //.enableSassLoader()
-
-    // uncomment if you use TypeScript
-    //.enableTypeScriptLoader()
-
-    // uncomment if you use React
-    //.enableReactPreset()
-
-    // uncomment to get integrity="..." attributes on your script & link tags
-    // requires WebpackEncoreBundle 1.4 or higher
-    //.enableIntegrityHashes(Encore.isProduction())
-
-    // uncomment if you're having problems with a jQuery plugin
-    //.autoProvidejQuery()
-
-    // Configure Webpack Dev Server options
-    .configureDevServerOptions({
-        port: 8080,  // Choisis un port libre, comme 8080
-        open: true,   // Cela ouvre automatiquement le navigateur
-        hot: true     // Hot module replacement (HMR) pour le rechargement automatique
+    // Configure Webpack Dev Server options correctly using a callback
+    .configureDevServerOptions((devServerOptions) => {
+        devServerOptions.port = 8080;  // Choisis un port libre, comme 8080
+        devServerOptions.open = true;   // Ouvre automatiquement le navigateur
+        devServerOptions.hot = true;    // Active le rechargement à chaud (HMR)
+        return devServerOptions;       // Retourne les options modifiées
     })
 ;
 
