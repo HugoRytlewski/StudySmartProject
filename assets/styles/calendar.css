@@ -1,12 +1,35 @@
-#calendar {
-    width: 100%;
-    height: calc(100vh - 50px); /* Utilise toute la hauteur de l'écran moins un petit espace pour éviter les barres de défilement */
-    margin: 0 auto; /* Centre le calendrier */
-    font-size: 0.9rem; /* Réduit la taille du texte */
-    overflow-y: auto; /* Permet le défilement uniquement à l'intérieur du calendrier */
-    padding-left: 100px; /* Assure que le calendrier n'est pas recouvert par la sidebar */
+/* Style général Apple-like */
+:root {
+    --apple-bg: #ffffff;
+    --apple-text: #1d1d1f;
+    --apple-secondary-text: #86868b;
+    --apple-border: #e5e5e5;
+    --apple-highlight: #0071e3;
+    --apple-light-highlight: #f2f7fd;
+    --apple-today: #f5f5f7;
+    --apple-radius: 12px;
+    --apple-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Conteneur principal avec style Apple */
+#calendar {
+    width: 100%;
+    height: calc(100vh - 50px);
+    margin: 0 auto;
+    font-size: 0.9rem;
+    overflow-y: auto;
+    padding-left: 100px;
+    background-color: var(--apple-bg);
+    border-radius: var(--apple-radius);
+    box-shadow: var(--apple-shadow);
+}
+
+/* Contrôles du calendrier */
 #calendar-controls {
     display: flex;
     justify-content: center;
@@ -16,6 +39,251 @@
 }
 
 #calendar-controls input {
-    padding: 5px;
+    padding: 8px 12px;
     width: 250px;
+    border-radius: 8px;
+    border: 1px solid var(--apple-border);
+    outline: none;
+    font-size: 14px;
+}
+
+#calendar-controls input:focus {
+    border-color: var(--apple-highlight);
+    box-shadow: 0 0 0 2px rgba(0, 113, 227, 0.2);
+}
+
+/* Header du calendrier */
+.fc-header-toolbar {
+    padding: 20px !important;
+    margin-bottom: 0 !important;
+}
+
+.fc-toolbar-title {
+    font-size: 24px !important;
+    font-weight: 500 !important;
+    color: var(--apple-text) !important;
+    letter-spacing: -0.5px;
+}
+
+/* Boutons style Apple */
+.fc .fc-button {
+    border-radius: 20px !important;
+    padding: 6px 15px !important;
+    font-weight: 500 !important;
+    font-size: 13px !important;
+    transition: all 0.2s ease !important;
+    box-shadow: none !important;
+}
+
+.fc-button-primary {
+    background-color: #f5f5f7 !important;
+    border: none !important;
+    color: var(--apple-text) !important;
+}
+
+.fc-button-primary:hover {
+    background-color: #ebebeb !important;
+}
+
+.fc-button-active {
+    background-color: var(--apple-highlight) !important;
+    color: white !important;
+}
+
+/* Jours de la semaine */
+.fc-col-header {
+    margin-bottom: 5px !important;
+}
+
+.fc-col-header-cell {
+    background-color: transparent !important;
+    border: none !important;
+    padding: 12px 0 !important;
+}
+
+.fc-col-header-cell-cushion {
+    color: var(--apple-secondary-text) !important;
+    font-weight: 500 !important;
+    font-size: 13px !important;
+    padding: 8px 0 !important;
+    text-decoration: none !important;
+}
+
+/* Cellules des jours */
+.fc-daygrid-day {
+    border: 1px solid var(--apple-border) !important;
+    transition: background-color 0.2s ease;
+}
+
+.fc-daygrid-day:hover {
+    background-color: rgba(0, 0, 0, 0.01);
+}
+
+/* Numéros des jours */
+.fc-daygrid-day-number {
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    color: var(--apple-text) !important;
+    padding: 8px 12px !important;
+    text-decoration: none !important;
+}
+
+/* Jours du mois précédent/suivant */
+.fc-day-other .fc-daygrid-day-number {
+    color: var(--apple-secondary-text) !important;
+    opacity: 0.6;
+}
+
+/* Jour sélectionné/actif */
+.fc-day-today {
+    background-color: var(--apple-today) !important;
+}
+
+.fc-day-today .fc-daygrid-day-number {
+    color: var(--apple-highlight) !important;
+    font-weight: 500 !important;
+}
+
+/* Style général des événements */
+.fc-event {
+    border: none !important;
+    border-radius: 6px !important;
+    padding: 4px 8px !important;
+    margin-bottom: 3px !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.fc-event:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Catégories d'événements avec style Apple */
+.fc-event.revision {
+    background-color: #e3f2fd !important;
+    color: #0071e3 !important;
+}
+
+.fc-event.quiz {
+    background-color: #fff8e1 !important;
+    color: #ff9500 !important;
+}
+
+.fc-event.cours {
+    background-color: #f1f8e9 !important;
+    color: #34c759 !important;
+}
+
+.fc-event.ef-cours {
+    background-color: #e8f5e9 !important;
+    border-left: 3px solid #34c759 !important;
+    color: #34c759 !important;
+}
+
+.fc-event.autres {
+    background-color: #ffebee !important;
+    color: #ff3b30 !important;
+}
+
+.fc-event.blog {
+    background-color: #f5f5f7 !important;
+    color: #5e5ce6 !important;
+}
+
+.fc-event.freebie {
+    background-color: #e8f5e9 !important;
+    color: #30d158 !important;
+}
+
+.fc-event.real {
+    background-color: #ffebee !important;
+    color: #ff453a !important;
+}
+
+.fc-event.quotes {
+    background-color: #e3f2fd !important;
+    color: #0a84ff !important;
+}
+
+.fc-event.giveaway {
+    background-color: #fff8e1 !important;
+    color: #ff9f0a !important;
+}
+
+/* Amélioration de l'aspect général */
+.fc-view-harness {
+    background-color: white !important;
+}
+
+/* Style du "more events" popup */
+.fc-more-popover {
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15) !important;
+}
+
+.fc-more-popover .fc-popover-header {
+    background-color: var(--apple-bg) !important;
+    border-bottom: 1px solid var(--apple-border) !important;
+    padding: 10px 12px !important;
+}
+
+.fc-more-popover .fc-popover-title {
+    font-weight: 500 !important;
+    color: var(--apple-text) !important;
+}
+
+.fc-more-popover .fc-popover-body {
+    padding: 10px !important;
+}
+
+/* Avatar utilisateur Apple-style */
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    background-color: #a881e6;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: 500;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 999;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    letter-spacing: -0.5px;
+}
+
+/* Animation subtile pour le calendrier */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+#calendar {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Style pour la barre de défilement */
+#calendar::-webkit-scrollbar {
+    width: 8px;
+}
+
+#calendar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#calendar::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+}
+
+#calendar::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.2);
 }
