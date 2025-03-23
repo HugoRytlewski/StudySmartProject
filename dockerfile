@@ -22,22 +22,16 @@ RUN useradd -m symfony && chown -R symfony /var/www/html
 
 # Passer à l'utilisateur "symfony" pour exécuter Composer sans erreurs
 USER symfony
-RUN composer install --no-dev --optimize-autoloader --no-scripts && composer clear-cache
+RUN composer install --no-dev --optimize-autoloader --no-scripts
 
 # Revenir à l'utilisateur root
 USER root
 
-# Donner les bons droits aux fichiers de cache, logs et autres répertoires
-RUN mkdir -p var tmp && chown -R www-data:www-data var tmp
-
-# Activer mod_rewrite pour Symfony
-RUN a2enmod rewrite
+# Donner les bons droits aux fichiers de cache et logs
+RUN mkdir -p var && chown -R www-data:www-data var
 
 # Modifier la racine d'Apache pour Symfony
 RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
-
-# Configurer Apache pour autoriser les réécritures sans .htaccess
-RUN echo '<Directory /var/www/html/public>\n  Options Indexes FollowSymLinks\n  AllowOverride None\n  Require all granted\n  RewriteEngine On\n  RewriteRule ^(.*)$ index.php [QSA,L]\n</Directory>' >> /etc/apache2/sites-available/000-default.conf
 
 # Exposer le port 80
 EXPOSE 80
