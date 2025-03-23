@@ -6,9 +6,7 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 }
 
 Encore
-    // directory where compiled assets will be stored
     .setOutputPath('public/build/')
-    // public path used by the web server to access the output path
     .setPublicPath('/build')
     .addEntry('app', './assets/app.js')
     .splitEntryChunks()
@@ -16,7 +14,7 @@ Encore
     .cleanupOutputBeforeBuild()
     .enableBuildNotifications()
     .enableSourceMaps(!Encore.isProduction())
-    .enableVersioning()
+    .enableVersioning(Encore.isProduction()) // ✅ Correction ici
     .configureBabel((config) => {
         config.exclude = /node_modules\/(?!(.*fullcalendar.*)\/).*/;
     })
@@ -24,12 +22,11 @@ Encore
         config.useBuiltIns = 'usage';
         config.corejs = '3.38';
     })
-    // Configure Webpack Dev Server options correctly using a callback
     .configureDevServerOptions((devServerOptions) => {
-        const port = process.env.PORT || 8080;  // Use the Render-defined PORT environment variable, fallback to 8080 if not defined
-        devServerOptions.port = port;  // Binding to the correct port
-        devServerOptions.open = true;  // Open the browser automatically
-        devServerOptions.hot = true;   // Enable Hot Module Replacement (HMR)
+        const port = process.env.PORT || 8080;
+        devServerOptions.port = port;
+        devServerOptions.open = true;
+        devServerOptions.hot = true;
         return devServerOptions;
     });
 
