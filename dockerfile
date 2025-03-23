@@ -35,6 +35,5 @@ RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available
 
 # Exposer le port 80
 EXPOSE 80
-EXPOSE $PORT
 
 CMD ["apache2-foreground"]

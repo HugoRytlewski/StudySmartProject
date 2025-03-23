@@ -63,6 +63,7 @@
 }
 
 .sidebar {
+    z-index: 50;
     width: var(--sidebar-width);
     padding: var(--spacing-lg) var(--spacing-sm);
     background: var(--background-white);

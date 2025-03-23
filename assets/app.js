@@ -1,4 +1,5 @@
 import './bootstrap.js';
+
 /*
  * Welcome to your app's main JavaScript file!
  *
@@ -6,5 +7,8 @@ import './bootstrap.js';
  * which should already be in your base.html.twig.
  */
 import './styles/app.css';
+import './styles/calendar.css';
+import './js/fullcalendar.js'
 
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
+
