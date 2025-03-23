@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="{{ asset('styles/dashboard.css') }}">
+        <title>StudySmart</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+            {% block importmap %}{{ importmap('app') }}{% endblock %}
+        {% endblock %}
+    </head>
+    <body>
+        <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
+        <script src="https://files.bpcontent.cloud/2025/02/12/15/20250212152906-F549H77Y.js"></script>
+
+        {% if app.user %}
+        <header class="sidebar">
+            <div class="sidebar-header">
+                <img src="{{ asset('icone/logo.svg') }}" alt="logo" class="logo-icon">
+                <h1 class="logo">StudySmart</h1>
+            </div>
+
+            <ul class="nav-menu">
+                <li class="nav-item active">
+                    <a href="{{ path('app_dashboard') }}" class="nav-link-content">
+                        <div class="icon-container">
+                            <img src="{{ asset('icone/acceuil.svg') }}" alt="logo" class="icon">
+                        </div>
+                        <span class="nav-text">Accueil</span>
+                    </a>
+                </li>
+            
+                <li class="nav-item">
+                    <a href="{{ path('app_calendar') }}" class="nav-link-content">
+                        <div class="icon-container">
+                            <img src="{{ asset('icone/calendrier.svg') }}" alt="logo" class="icon">
+                        </div>
+                        <span class="nav-text">Calendrier</span>
+                    </a>
+                </li>
+            
+                <li class="nav-item">
+                    <a href="{{ path('app_document') }}" class="nav-link-content">
+                        <div class="icon-container">
+                            <img src="{{ asset('icone/cours.svg') }}" alt="logo" class="icon">
+                        </div>
+                        <span class="nav-text">Documents</span>
+                    </a>
+                </li>
+            
+                <li class="nav-item">
+                    <a href="{{path('messages_index')}}" class="nav-link-content">
+                        <div class="icon-container">
+                            <img src="{{ asset('icone/message.svg') }}" alt="logo" class="icon">
+                            <span id="notification" class="notification"></span>
+                        </div>
+                        <span class="nav-text">Messages</span>
+                    </a>
+                </li>
+            </ul>
+            
+        
+            <div class="sidebar-footer">
+                <div class="nav-item">
+                    <a href="{{path('app_logout')}}" class="nav-link-content">
+                        <div class="icon-container">
+                            <svg height="20" witdh="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000" transform="matrix(-1, 0, 0, 1, 0, 0)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14 4L17.5 4C20.5577 4 20.5 8 20.5 12C20.5 16 20.5577 20 17.5 20H14M3 12L15 12M3 12L7 8M3 12L7 16" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                        </div>
+                        <span class="nav-text">Déconnexion</span>
+                    </a>
+                </div>
+            </div>
+        </header>
+        {% endif %}
+        {% block body %}
+        {% endblock %}
+
+        {% block scripts %}
+        {% endblock %}
+    </body>
+</html>
+
+<script>
+
+const notification = document.getElementById('notification');
+function fetchLatestMessages() {
+        fetch(`/messages/check`)
+            .then(response => response.json())
+            .then(data => {
+                if(data){
+                    notification.style.display = 'block';
+                }else{
+                    notification.style.display = 'none';
+                }
+            })
+            .catch(error => console.error('Erreur lors de la récupération des messages:', error));
+    }
+
+    setInterval(fetchLatestMessages, 10000);
+
+</script>
