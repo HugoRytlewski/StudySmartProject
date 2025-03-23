@@ -25,11 +25,13 @@ Encore
     .configureDevServerOptions((devServerOptions) => {
         const port = process.env.PORT || 8080;
         devServerOptions.port = port;
-        devServerOptions.host = '0.0.0.0'; // ✅ Ajout
+        devServerOptions.host = '0.0.0.0'; // Écouter sur toutes les IPs
+        devServerOptions.allowedHosts = "all"; // ✅ Accepter toutes les requêtes
         devServerOptions.open = true;
         devServerOptions.hot = true;
         return devServerOptions;
     })
+    
     
 
 module.exports = Encore.getWebpackConfig();
