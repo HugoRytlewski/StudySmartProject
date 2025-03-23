@@ -28,7 +28,6 @@ Encore
     .configureDevServerOptions((devServerOptions) => {
         const port = process.env.PORT || 8080;  // Use the Render-defined PORT environment variable, fallback to 8080 if not defined
         devServerOptions.port = port;  // Binding to the correct port
-        devServerOptions.host = '0.0.0.0';  // Listen on all network interfaces
         devServerOptions.open = true;  // Open the browser automatically
         devServerOptions.hot = true;   // Enable Hot Module Replacement (HMR)
         return devServerOptions;
