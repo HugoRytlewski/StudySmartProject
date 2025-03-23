@@ -40,6 +40,46 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Sauvegarde la date sélectionnée
                 form.dataset.selectedDate = info.dateStr;
 
+                // Détecter la vue actuelle
+                let viewType = calendar.view.type;
+
+                if (viewType === 'dayGridMonth') {
+                    // Si la vue est sur le mois, vider les champs de temps
+                    document.getElementById('eventStart').value = '';
+                    document.getElementById('eventEnd').value = '';
+                }
+
+                // Ouvre le modal
+                modal.show();
+            },
+
+            select: function (info) {
+                console.log("📅 Plage de dates cliquée :", info.startStr, "à", info.endStr);
+
+                // Sauvegarde la plage de dates sélectionnée
+                form.dataset.selectedDate = info.startStr;
+                let selectedStartDate = new Date(info.startStr);
+                let selectedEndDate = new Date(info.endStr);
+
+                // Vérifier si le clic est sur "all-day"
+                let isAllDay = info.allDay;
+
+                if (isAllDay) {
+                    // Sélectionner l'option "Toute la journée" et désactiver les champs de temps
+                    document.getElementById('allDayEvent').checked = true;
+                    document.getElementById('eventStart').value = '';
+                    document.getElementById('eventEnd').value = '';
+                    document.getElementById('eventStart').disabled = true;
+                    document.getElementById('eventEnd').disabled = true;
+                } else {
+                    // Remplir les champs de date et d'heure dans le modal
+                    document.getElementById('allDayEvent').checked = false;
+                    document.getElementById('eventStart').disabled = false;
+                    document.getElementById('eventEnd').disabled = false;
+                    document.getElementById('eventStart').value = formatTime(selectedStartDate);
+                    document.getElementById('eventEnd').value = formatTime(selectedEndDate);
+                }
+
                 // Ouvre le modal
                 modal.show();
             },
@@ -62,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Ouvre le modal de détails
                 detailModal.show();
-            }
+            },
         });
 
         calendar.render();
@@ -142,9 +182,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     return;
                 }
 
-                startDateTime = `${selectedDate}T${startTime}:00`;
-                endDateTime = `${selectedDate}T${endTime}:00`;
+                startDateTime = selectedDate.includes('T') ? selectedDate : `${selectedDate}T${startTime}:00`;
+                endDateTime = selectedDate.includes('T') ? selectedDate : `${selectedDate}T${endTime}:00`;
             }
+
+            // Remove timezone information if present
+            startDateTime = startDateTime.replace(/(\+|-)\d{2}:\d{2}/, '');
+            endDateTime = endDateTime.replace(/(\+|-)\d{2}:\d{2}/, '');
 
             fetch('/api/add-event', {
                 method: 'POST',

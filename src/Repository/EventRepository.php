@@ -40,4 +40,17 @@ class EventRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+
+    public function getLast4Events($idUser): array
+    {
+        return $this->createQueryBuilder('e')
+            ->
+            where('e.user = :idUser')
+            ->setParameter('idUser', $idUser)
+            ->orderBy('e.id', 'DESC')
+            ->setMaxResults(3)
+            ->getQuery()
+            ->getResult();
+    }
 }

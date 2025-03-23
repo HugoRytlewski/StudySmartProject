@@ -4,7 +4,6 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    {# Ajoutez ici vos fichiers CSS spécifiques #}
 {% endblock %}
 
 {% block body %}
@@ -47,19 +46,22 @@
                 <div class="info-section">
                     <div class="event-section">
                         <h2 class="section-title">Prochain événement</h2>
-                        <div class="event-item">
-                            <div class="event-icon"></div>
-                            <div class="event-details">
-                                <p>{{ evenement.matiere }}</p>
-                                <p class="event-date">{{ evenement.description }} avant le {{ evenement.date }}</p>
+                          {% for evenement in lastEvent %}
+                            <div class="event-item">
+                                <div class="event-icon"></div>
+                                <div class="event-details">
+                                    <p>{{ evenement.titre }}</p>
+                                    <p class="event-date">{{ evenement.dateStart|date('d/m/Y H:i') }} avant le {{ evenement.dateend|date('d/m/Y H:i') }}</p>
+                                </div>
                             </div>
-                        </div>
+                            {% endfor %}
+                       
                     </div>
 
                     <div class="calendar-section">
                         <div class="section-header">
                             <h2 class="section-title">Calendrier</h2>
-                            <p class="see-more">Voir +</p>
+                            <a href="{{path('app_calendar')}}" class="see-more">Voir +</a>
                         </div>
                         <div class="calendar-item">
                             <div class="calendar-event">
@@ -73,14 +75,17 @@
                     <div class="messages-section">
                         <div class="section-header">
                             <h2 class="section-title">Dernier message</h2>
-                            <p class="see-more">Voir +</p>
+
+                            <a href="{{path('messages_index')}}" class="see-more">Voir +</a>
                         </div>
                         <div class="message-item">
                             <div class="user-avatar"></div>
+                             {% for message in lastMessages %}
                             <div class="message-content">
-                                <p>{{ message.auteur }}</p>
-                                <p class="message-text">{{ message.texte }}</p>
+                                <p>{{ message.recipient.firstname  }}</p>
+                                <p class="message-text">{{ message.content }}</p>
                             </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
@@ -91,5 +96,4 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {# Ajoutez ici vos fichiers JavaScript spécifiques #}
 {% endblock %}
