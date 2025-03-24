@@ -110,6 +110,7 @@ public function reformule(Document $document, EntityManagerInterface $em, Securi
         $parser = new \Smalot\PdfParser\Parser();
         $pdf = $parser->parseFile('../public/uploads/pdf/' . $document->getChemin());        
         $text = $pdf->getText();
+        $text = mb_convert_encoding($text, 'UTF-8', 'auto'); // Ensure UTF-8 encoding
         $result = $openAi->getResponse($text);
         $content = $result['choices'][0]['message']['content'];
 

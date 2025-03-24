@@ -86,23 +86,32 @@ document.addEventListener('DOMContentLoaded', function () {
 
             eventClick: function (info) {
                 console.log("📅 Événement cliqué :", info.event);
-
+            
                 // Formater la date et l'heure
                 let eventDate = new Date(info.event.start);
                 let startDate = formatDate(eventDate);
                 let startTime = formatTime(eventDate);
                 let endTime = info.event.end ? formatTime(new Date(info.event.end)) : 'Non spécifié';
-
+            
                 // Afficher les détails de l'événement dans le modal
                 document.getElementById('detailTitle').innerText = info.event.title;
                 document.getElementById('detailDate').innerText = startDate;
                 document.getElementById('detailStart').innerText = startTime;
                 document.getElementById('detailEnd').innerText = endTime;
                 document.getElementById('deleteEvent').dataset.eventId = info.event.id;
-
+                document.getElementById('idEvent').innerText = info.event.id;
+            
+                // Mettre à jour dynamiquement le lien dans le modal
+                let link = document.getElementById("revisionLink");
+                if (link) {
+                    let currentUrl = link.href; // URL de base générée par Symfony avec id=0
+                    link.href = currentUrl.replace("/0", "/" + info.event.id); // Remplace 0 par l'ID réel
+                }
+            
                 // Ouvre le modal de détails
                 detailModal.show();
             },
+            
         });
 
         calendar.render();

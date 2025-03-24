@@ -53,8 +53,14 @@
                     <p><strong>Date:</strong> <span id="detailDate"></span></p>
                     <p><strong>Heure de début:</strong> <span id="detailStart"></span></p>
                     <p><strong>Heure de fin:</strong> <span id="detailEnd"></span></p>
+                    <p><strong>ID:</strong> <span id="idEvent"></span></p>
                 </div>
                 <div class="modal-footer">
+<a href="{{ path('app_calendar_ia', {'id': 0}) }}" 
+   id="revisionLink" 
+   class="btn btn-primary">
+   Programmer une révision grâce à l'IA
+</a>
                     <button id="deleteEvent" type="button" class="btn btn-danger">Supprimer</button>
                 </div>
             </div>
