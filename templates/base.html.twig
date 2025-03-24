@@ -30,7 +30,7 @@
             </div>
 
             <ul class="nav-menu">
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a href="{{ path('app_dashboard') }}" class="nav-link-content">
                         <div class="icon-container">
                             <img src="{{ asset('icone/acceuil.svg') }}" alt="logo" class="icon">
@@ -106,5 +106,18 @@ function fetchLatestMessages() {
     }
 
     setInterval(fetchLatestMessages, 10000);
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const navItems = document.querySelectorAll(".nav-item");
+
+        navItems.forEach(item => {
+            const link = item.querySelector("a");
+            if (link && link.getAttribute("href") === window.location.pathname) {
+                // Supprime la classe active de tous les éléments avant d'ajouter la bonne
+                navItems.forEach(el => el.classList.remove("active"));
+                item.classList.add("active");
+            }
+        });
+    });
 
 </script>

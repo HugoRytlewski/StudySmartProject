@@ -180,6 +180,9 @@ h1{
 .nav-item.active .nav-text {
     color: var(--background-white);
 }
+.nav-item.active .icon {
+    filter: brightness(0) invert(1); /* Rend le SVG blanc */
+}
 
 .notification {
     position: absolute;
