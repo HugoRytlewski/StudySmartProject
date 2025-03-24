@@ -16,6 +16,7 @@ use App\Form\CommentaireDocumentType;
 use Symfony\Bundle\SecurityBundle\Security;
 use App\Service\OpenRouterService;
 use League\CommonMark\CommonMarkConverter;
+use Smalot\PdfParser\Parser;
 
 final class DocumentController extends AbstractController{
     #[Route('/document', name: 'app_document')]
