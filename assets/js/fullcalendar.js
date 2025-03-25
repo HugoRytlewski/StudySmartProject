@@ -101,11 +101,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.getElementById('deleteEvent').dataset.eventId = info.event.id;
                 document.getElementById('idEvent').innerText = info.event.id;
             
-                // Mettre à jour dynamiquement le lien dans le modal
                 let link = document.getElementById("revisionLink");
                 if (link) {
-                    let currentUrl = link.href; // URL de base générée par Symfony avec id=0
-                    link.href = currentUrl.replace("/0", "/" + info.event.id); // Remplace 0 par l'ID réel
+                    let currentUrl = link.href; 
+                    link.href = currentUrl.replace("/0", "/" + info.event.id);
                 }
             
                 // Ouvre le modal de détails

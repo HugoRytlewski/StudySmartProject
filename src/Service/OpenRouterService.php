@@ -8,7 +8,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class OpenRouterService
 {
     private const API_URL = 'https://openrouter.ai/api/v1/chat/completions';
-        
+    
     public function __construct(
         private ParameterBagInterface $parameterBag,
         private HttpClientInterface $httpClient
@@ -57,9 +57,7 @@ class OpenRouterService
         }
     }
 
-
-
-    public function getCalendar(string $chat,string $chat2 ,string $model = 'microsoft/phi-3-medium-128k-instruct:free'): array
+    public function getCalendar(string $chat, string $chat2, string $model = 'microsoft/phi-3-medium-128k-instruct:free'): array
     {
         try {
             $apiKey = $this->parameterBag->get('OPENROUTER_API_KEY');
@@ -87,7 +85,6 @@ class OpenRouterService
 
             $data = $response->toArray();
             var_dump($data);
-
             
             if (!isset($data['choices'][0]['message']['content'])) {
                 throw new \RuntimeException('Structure de réponse inattendue : ' . json_encode($data));
@@ -103,7 +100,7 @@ class OpenRouterService
         }
     }
 
-    public function getQuizz(string $chat ,string $model = 'microsoft/phi-3-medium-128k-instruct:free'): array
+    public function getQuizz(string $chat, string $model = 'microsoft/phi-3-medium-128k-instruct:free'): array
     {
         try {
             $apiKey = $this->parameterBag->get('OPENROUTER_API_KEY');
@@ -113,7 +110,92 @@ class OpenRouterService
                 'messages' => [
                     [
                         'role' => 'user',
-                        'content' => "VOici le cours ". $chat . "Genere une page html css javascript en une seule page avec un formulaire de quizz. Le formulaire doit contenir 5 questions avec 4 réponses possibles pour chaque question. Une seule réponse est correcte pour chaque question. Le formulaire doit être soumis en POST à l'URL '/submit'. Le formulaire doit être stylisé avec du CSS et les réponses doivent être vérifiées en JavaScript. Le formulaire doit être valide HTML5."
+                     'content' => "Voici le cours : " . $chat . " Génère une page HTML simple avec Tailwind CSS contenant un quiz basé sur ce cours. Les réponses incorrectes doivent devenir rouges au survol, et vertes si elles sont correctes. Les questions doivent être disposées en colonnes et utilisables sans action préalable.
+
+Exigences spécifiques :
+- Génère exactement 5 questions pertinentes basées sur le cours fourni.
+- Chaque question doit avoir 4 options avec une seule réponse correcte.
+- Utilise Tailwind CSS pour le style (CDN déjà inclus).
+- Le quiz doit être entièrement fonctionnel sans rechargement de page.
+- Centrer le quiz sur la page.
+- Fournis uniquement le code HTML complet sans commentaires ni explications.
+- Tout doit être en français.
+- Assure une expérience utilisateur fluide sans bugs.
+
+Modèle HTML :
+<!DOCTYPE html>
+<html lang='fr'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Quiz</title>
+    <link href='https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css' rel='stylesheet'>
+    <style>
+        .correct\:hover {
+            background-color: green;
+        }
+        .incorrect\:hover {
+            background-color: red;
+        }
+    </style>
+</head>
+<body class='flex items-center justify-center min-h-screen bg-gray-100'>
+    <div class='bg-white p-8 rounded shadow-md w-full max-w-2xl'>
+        <h1 class='text-2xl font-bold mb-4'>Quiz</h1>
+        <div class='grid grid-cols-1 gap-4 md\:grid-cols-2'>
+            <!-- Remplacez les questions et options ci-dessous par celles générées -->
+            <div class='question'>
+                <p class='font-semibold'>Question 1</p>
+                <div class='option incorrect'>Option 1</div>
+                <div class='option incorrect'>Option 2</div>
+                <div class='option correct'>Option 3</div>
+                <div class='option incorrect'>Option 4</div>
+            </div>
+            <div class='question'>
+                <p class='font-semibold'>Question 2</p>
+                <div class='option incorrect'>Option 1</div>
+                <div class='option correct'>Option 2</div>
+                <div class='option incorrect'>Option 3</div>
+                <div class='option incorrect'>Option 4</div>
+            </div>
+            <div class='question'>
+                <p class='font-semibold'>Question 3</p>
+                <div class='option correct'>Option 1</div>
+                <div class='option incorrect'>Option 2</div>
+                <div class='option incorrect'>Option 3</div>
+                <div class='option incorrect'>Option 4</div>
+            </div>
+            <div class='question'>
+                <p class='font-semibold'>Question 4</p>
+                <div class='option incorrect'>Option 1</div>
+                <div class='option incorrect'>Option 2</div>
+                <div class='option incorrect'>Option 3</div>
+                <div class='option correct'>Option 4</div>
+            </div>
+            <div class='question'>
+                <p class='font-semibold'>Question 5</p>
+                <div class='option incorrect'>Option 1</div>
+                <div class='option incorrect'>Option 2</div>
+                <div class='option correct'>Option 3</div>
+                <div class='option incorrect'>Option 4</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', () => {
+                if (option.classList.contains('correct')) {
+                    option.classList.add('bg-green-500');
+                } else {
+                    option.classList.add('bg-red-500');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+"
+
                     ]
                 ],
                 'temperature' => 0.7

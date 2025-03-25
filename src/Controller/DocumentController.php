@@ -111,7 +111,7 @@ public function reformule(Document $document, EntityManagerInterface $em, Securi
         $parser = new \Smalot\PdfParser\Parser();
         $pdf = $parser->parseFile('../public/uploads/pdf/' . $document->getChemin());        
         $text = $pdf->getText();
-        $text = mb_convert_encoding($text, 'UTF-8', 'auto'); // Ensure UTF-8 encoding
+        $text = mb_convert_encoding($text, 'UTF-8', 'auto');
         $result = $openAi->getResponse($text);
         $content = $result['choices'][0]['message']['content'];
 
@@ -128,23 +128,22 @@ public function reformule(Document $document, EntityManagerInterface $em, Securi
 public function quizz(Document $document, EntityManagerInterface $em, Security $security, OpenRouterService $openAi): Response
 {
     $user = $security->getUser();
-        if ($document->getUser() !== $user) {
-            throw $this->createAccessDeniedException("Vous n'avez pas accès à ce document.");
-        }   
+    if ($document->getUser() !== $user) {
+        throw $this->createAccessDeniedException("Vous n'avez pas accès à ce document.");
+    }   
 
-        $parser = new \Smalot\PdfParser\Parser();
-        $pdf = $parser->parseFile('../public/uploads/pdf/' . $document->getChemin());        
-        $text = $pdf->getText();
-        $text = mb_convert_encoding($text, 'UTF-8', 'auto'); 
-        $result = $openAi->getQuizz($text);
-        $content = $result['choices'][0]['message']['content'];
-dd($content);
-        $converter = new CommonMarkConverter();
-        $htmlContent = $converter->convert($content);
+    $parser = new \Smalot\PdfParser\Parser();
+    $pdf = $parser->parseFile('../public/uploads/pdf/' . $document->getChemin());        
+    $text = $pdf->getText();
 
-        return $this->render('document/quizz.html.twig', [
-            'document' => $document,
-            'quizzContent' => $htmlContent,
-        ]);
+    $text = mb_convert_encoding($text, 'UTF-8', 'auto'); 
+    $result = $openAi->getQuizz($text);
+    $content = $result['choices'][0]['message']['content'];
+    $content = preg_replace('/```json\s*(.*?)\s*```/s', '$1', $content);
+
+    return $this->render('document/quizz.html.twig', [
+        'content' => $content,
+    ]);
 }
+
 }

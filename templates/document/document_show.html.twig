@@ -46,7 +46,8 @@
         <div class="button">
             <button id="highlight-btn">🖍 Surligner</button>
             <button id="annotate-btn">✏️ Ajouter Annotation</button>
-            <a href={{ path('document_reformule', {'id': document.id}) }} id="reformulate-btn">🔄 Reformuler grace a l'ia </button> 
+            <button><a style="color: white;" href={{ path('document_reformule', {'id': document.id}) }} id="reformulate-btn">🔄 Reformuler grace à l'ia </a></button>
+            <button> <a  style="color: white;" href={{ path('document_quizz', {'id': document.id}) }} id="quizz-btn">🧠 Génerez un quiz grâce à l'ia </a> </button>
             <button id="exit-mode-btn" style="display: none;">❌ Quitter le mode</button>
         </div>
     </div>
