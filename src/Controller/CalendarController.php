@@ -52,16 +52,18 @@ final class CalendarController extends AbstractController
 
         $result = $openAi->getCalendar($evenementJson, $eventSpecific);
         $content = $result['choices'][0]['message']['content'];
-        $contentJson = json_decode($content, true);
+        
+        $content = preg_replace('/```json\s*(.*?)\s*```/s', '$1', $content);
+
+        $contentJson = json_decode($content, true); 
+        
+        $eventData = $contentJson[0];
+        
         $newEvent = new Event();
-
-
-
-
-        $newEvent->setTitre($contentJson['title']);
-        $newEvent->setDatestart(new \DateTime($contentJson['datestart']));
-        $newEvent->setDateend(new \DateTime($contentJson['dateend']));
-        $user = $em->getRepository(User::class)->find($contentJson['user'][0]['id']);
+        $newEvent->setTitre($eventData['title']);
+        $newEvent->setDateStart(new \DateTime($eventData['datestart']));
+        $newEvent->setDateEnd(new \DateTime($eventData['dateend']));        
+        $user = $em->getRepository(User::class)->find($event->getUser()->getId());
         $newEvent->setUser($user);
         $em->persist($newEvent);
         $em->flush();
